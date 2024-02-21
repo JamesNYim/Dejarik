@@ -5,6 +5,8 @@ let config = {
 		autoCenter: Phaser.Scale.CENTER_BOTH,
 		width: 256,
 		height: 256,
+		zoom: 5,
+		pixelArt: true
 	},
 	scene: [Play]
 }
