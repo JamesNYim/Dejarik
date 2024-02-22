@@ -6,21 +6,34 @@ class Play extends Phaser.Scene {
 	preload() {
 		this.load.image('boardSprite', './assets/Board.png')
 		this.load.image('houjixSprite', './assets/houjix.png')
+		this.load.spritesheet('houjixIdleSheet', './assets/houjixAssets/houjixStatic.png',
+			{
+				frameWidth: 32,
+				FrameHeight: 32,
+				startFrame: 0,
+				endFrame: 1
+			})
 		
 	}
 
 	create() {
-		this.board = this.add.sprite(
+		/*this.board = this.add.sprite(
 			0,
 			0,
 			'boardSprite')
-			.setOrigin(0, 0)
+			.setOrigin(0, 0)*/
 
 		this.houjix = new Houjix(
 			this,
 			game.config.width / 2,
 			game.config.height / 2,
-			'houjixSprite')
-			
+			'houjixSprite',
+			0,
+			'houjixIdleSheet')
+			.setOrigin(0,0)
 	}
+	update() {
+		this.pieceStateMachine.step()
+	}
+	
 }
