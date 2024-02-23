@@ -31,9 +31,23 @@ class Play extends Phaser.Scene {
 			0,
 			'houjixIdleSheet')
 			.setOrigin(0,0)
+		this.houjix.setInteractive({draggable: true})
+		this.houjix.on('pointerover', () => console.log('pointer over'))
+		
+		
 	}
+
 	update() {
 		this.pieceStateMachine.step()
+	}
+
+	pointerDown() {
+		//console.log('pointer down')
+		return true
+	}
+
+	pointerOver() {
+		return true
 	}
 	
 }

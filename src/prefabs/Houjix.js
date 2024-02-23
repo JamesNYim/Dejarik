@@ -30,6 +30,15 @@ class Houjix extends Piece {
 		})	
 		
 	}
+
+	move(xCoord, yCoord) {
+		this.x = xCoord
+		this.y = yCoord
+	}
+
+	changeState(state) {
+
+	}
 }
 
 class IdleState extends State {
@@ -45,6 +54,7 @@ class IdleState extends State {
 		//Transition to move if it is the players turn and
 		//if the selected board space is a valid spot
 		//this.stateMachine.transition('move')
+		piece.on('drag', (pointer, dragX, dragY) => this.stateMachine.transition('move', dragX, dragY))
 
 		//Transition to attack if it is the players turn
 		//and there is an enemy in a valid spot
@@ -52,15 +62,22 @@ class IdleState extends State {
 
 		//Transition to dead if no health left
 		//this.stateMachine.transition('dead')
+		piece.on('pointerdown', () => this.stateMachine.transition('dead'))
 	}
 }
 
 class MoveState extends State {
-	executeState(scene, piece) {
+	enterState(scene, piece, x, y) {
+		console.log(`Inital x: ${x} Inital y: ${y}`)
+		piece.move(x, y)
+	}
+	executeState(scene, piece, x, y) {
 		//Move piece to selected board spot
 		//Animate movement to the spot
 		//Once it reaches spot go back to idle
 		//this.stateMachine.transition('idle')
+		piece.on('pointerup', () =>this.stateMachine.transition('idle'))
+		
 	}
 }
 
@@ -75,6 +92,8 @@ class AttackState extends State {
 
 class DeadState extends State {
 	enterState(scene, piece) {
+		console.log("died")
+		piece.anims.stop('houjixIdle')
 		//Piece has died
 		// We cannot leave this state 
 	}
