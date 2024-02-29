@@ -9,6 +9,9 @@ class Piece extends Phaser.Physics.Arcade.Sprite {
 			attack: new AttackState(),
 			dead: new DeadState(), 
 		}, [scene, this])
+
+		scene.physics.add.existing(this)
+		scene.physics.world.enable(this)
 	}
 }
 

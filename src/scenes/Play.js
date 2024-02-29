@@ -22,7 +22,8 @@ class Play extends Phaser.Scene {
 			0,
 			'boardSprite')
 			.setOrigin(0,0)
-
+		
+		this.spaceGroup = this.physics.add.group()
 		this.space = new Space(
 			this,
 			36,
@@ -30,7 +31,8 @@ class Play extends Phaser.Scene {
 			'white8x8',
 			0,
 			46,
-			46)
+			46,
+			this.spaceGroup)
 			.setOrigin(0, 0)
 
 		this.houjix = new Houjix(
@@ -44,7 +46,7 @@ class Play extends Phaser.Scene {
 		this.houjix.setInteractive({draggable: true})
 		this.houjix.on('pointerover', () => console.log('pointer over'))
 		
-		
+		this.physics.add.overlap(this.houjix, this.spaceGroup, () => {console.log('overlap'), null, this})
 	}
 
 	update() {

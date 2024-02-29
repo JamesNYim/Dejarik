@@ -36,8 +36,6 @@ class IdleState extends State {
 	enterState(scene, piece) {
 		//Play Initial State Animation
 		//In this case its IdleAnimation
-		console.log("idleState")
-		console.log(scene)
 		piece.anims.play('houjixIdle')
 	}
 
@@ -59,7 +57,6 @@ class IdleState extends State {
 
 class MoveState extends State {
 	enterState(scene, piece, x, y) {
-		console.log(`Inital x: ${x} Inital y: ${y}`)
 		piece.move(x, y)
 	}
 	executeState(scene, piece, x, y) {
