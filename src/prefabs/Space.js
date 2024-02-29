@@ -8,9 +8,30 @@ class Space extends Phaser.Physics.Arcade.Sprite {
 		this.height = height
 		this.group = spaceGroup
 
-		var spaceBoundary = this.scene.add.rectangle(this.x, this.y, this.width, this.height)
+		
+		
+	}
+
+	spawnBoundary(x, y) {
+		var spaceBoundary = this.scene.add.rectangle(x, y, this.width, this.height)
 		this.scene.physics.world.enable(spaceBoundary)
 		this.group.add(spaceBoundary)
 		console.log("created space")
+	}
+
+	spawnBoard() {
+		var x = this.x
+		var y = this.y
+		for (var i = 1; i <= 25; i++) {
+			this.spawnBoundary(x, y)
+			if (i % 5 == 0) {
+				y += this.height + 6
+				x = this.x
+			}
+			else {
+				x += this.width + 6
+			}
+			
+		}
 	}
 }

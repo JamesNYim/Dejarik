@@ -3,8 +3,8 @@ let config = {
 		mode: Phaser.Scale.FIT,
 		parent: 'phaser-example',
 		autoCenter: Phaser.Scale.CENTER_BOTH,
-		width: 256,
-		height: 256,
+		width: 512,
+		height: 512,
 		zoom: 5,
 		pixelArt: true
 	},

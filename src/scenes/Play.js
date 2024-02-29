@@ -26,15 +26,17 @@ class Play extends Phaser.Scene {
 		this.spaceGroup = this.physics.add.group()
 		this.space = new Space(
 			this,
-			36,
-			36,
+			81,
+			54,
 			'white8x8',
 			0,
-			46,
-			46,
+			86,
+			86,
 			this.spaceGroup)
 			.setOrigin(0, 0)
 
+		this.space.spawnBoard()
+		
 		this.houjix = new Houjix(
 			this,
 			game.config.width / 2,
@@ -43,6 +45,7 @@ class Play extends Phaser.Scene {
 			0,
 			'houjixIdleSheet')
 			.setOrigin(0,0)
+		this.houjix.setSize(32, 32, false)
 		this.houjix.setInteractive({draggable: true})
 		this.houjix.on('pointerover', () => console.log('pointer over'))
 		
@@ -61,5 +64,4 @@ class Play extends Phaser.Scene {
 	pointerOver() {
 		return true
 	}
-	
 }
