@@ -7,17 +7,8 @@ class Houjix extends Piece {
 		super(scene, x, y, texture, frame)
 		this.scene = scene
 		scene.add.existing(this)
-		/*
-		this.scene.load.spritesheet('houjixIdleSheet', './assets/houjixAssets/houjixStatic.png',
-			{
-				frameWidth: 16,
-				FrameHeight: 16,
-				startFrame: 0,
-				endFrame: 1
-			})
-			*/
-		this.idleAnimation = idleAnimation
-	
+
+		this.idleAnimation = idleAnimation	
 		this.houjixIdleAnimation = this.scene.anims.create({
 			key: 'houjixIdle',
 			repeat: -1,
@@ -76,7 +67,7 @@ class MoveState extends State {
 		//Animate movement to the spot
 		//Once it reaches spot go back to idle
 		//this.stateMachine.transition('idle')
-		piece.on('pointerup', () =>this.stateMachine.transition('idle'))
+		piece.on('pointerup', () => this.stateMachine.transition('idle'))
 		
 	}
 }

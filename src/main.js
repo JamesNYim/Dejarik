@@ -8,6 +8,12 @@ let config = {
 		zoom: 5,
 		pixelArt: true
 	},
+	physics: {
+		default: 'arcade',
+		arcade: {
+			debug: true
+		}
+	},
 	scene: [Play]
 }
 

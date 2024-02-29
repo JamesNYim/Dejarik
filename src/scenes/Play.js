@@ -4,7 +4,8 @@ class Play extends Phaser.Scene {
 	}
 
 	preload() {
-		this.load.image('boardSprite', './assets/Board.png')
+		this.load.image('boardSprite', './assets/BoardAssets/DejarikBoard.png')
+		this.load.image('white8x8', './assets/BoardAssets/White_8x8.png')
 		this.load.image('houjixSprite', './assets/houjix.png')
 		this.load.spritesheet('houjixIdleSheet', './assets/houjixAssets/houjixStatic.png',
 			{
@@ -13,15 +14,24 @@ class Play extends Phaser.Scene {
 				startFrame: 0,
 				endFrame: 1
 			})
-		
 	}
 
 	create() {
-		/*this.board = this.add.sprite(
+		this.board = this.add.image(
 			0,
 			0,
 			'boardSprite')
-			.setOrigin(0, 0)*/
+			.setOrigin(0,0)
+
+		this.space = new Space(
+			this,
+			36,
+			36,
+			'white8x8',
+			0,
+			46,
+			46)
+			.setOrigin(0, 0)
 
 		this.houjix = new Houjix(
 			this,
