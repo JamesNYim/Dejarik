@@ -49,7 +49,7 @@ class Play extends Phaser.Scene {
 		this.houjix.setInteractive({draggable: true})
 		this.houjix.on('pointerover', () => console.log('pointer over'))
 		
-		this.physics.add.overlap(this.houjix, this.spaceGroup, () => {console.log('overlap'), null, this})
+		this.physics.add.overlap(this.houjix, this.spaceGroup, this.pieceToSpace, null, this)
 	}
 
 	update() {
@@ -63,5 +63,9 @@ class Play extends Phaser.Scene {
 
 	pointerOver() {
 		return true
+	}
+
+	pieceToSpace(piece, space) {
+		console.log(`Piece ${piece.name} Space: ${space.boardCoords}`)
 	}
 }
