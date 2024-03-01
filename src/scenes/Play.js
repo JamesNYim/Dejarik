@@ -39,17 +39,15 @@ class Play extends Phaser.Scene {
 		
 		this.houjix = new Houjix(
 			this,
-			game.config.width / 2,
-			game.config.height / 2,
+			game.config.width / 2 - 10,
+			game.config.height / 2 - 12,
 			'houjixSprite',
 			0,
 			'houjixIdleSheet')
 			.setOrigin(0,0)
 		this.houjix.setSize(32, 32, false)
 		this.houjix.setInteractive({draggable: true})
-		this.houjix.on('pointerover', () => console.log('pointer over'))
-		
-		this.physics.add.overlap(this.houjix, this.spaceGroup, this.pieceToSpace, null, this)
+		this.physics.add.overlap(this.houjix, this.spaceGroup, this.pieceToSpaceHandler, null, this)
 	}
 
 	update() {
@@ -66,6 +64,22 @@ class Play extends Phaser.Scene {
 	}
 
 	pieceToSpace(piece, space) {
-		console.log(`Piece ${piece.name} Space: ${space.boardCoords}`)
+		
+		
+	}
+
+	pieceToSpaceHandler(piece, space) {
+		
+		piece.on('pointerup', () => this.checkValidMove(piece, space))
+	}
+
+	checkValidMove(piece, space) {
+		//console.log(piece.getCurrentSpace())
+		if (piece.getCurrentSpace() === undefined || piece.getCurrentSpace() === null) {
+			piece.setCurrentSpace(space.boardCoords)
+			return
+		}
+		piece.checkMoveToSpace(space.boardCoords)
+		//console.log("switched spaces")
 	}
 }

@@ -51,7 +51,6 @@ class IdleState extends State {
 
 		//Transition to dead if no health left
 		//this.stateMachine.transition('dead')
-		piece.on('pointerdown', () => this.stateMachine.transition('dead'))
 	}
 }
 

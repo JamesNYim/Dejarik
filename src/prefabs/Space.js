@@ -16,7 +16,6 @@ class Space extends Phaser.Physics.Arcade.Sprite {
 		spaceBoundary.boardCoords = boardCoords
 		this.scene.physics.world.enable(spaceBoundary)
 		this.group.add(spaceBoundary)
-		console.log("created space")
 	}
 
 	spawnBoard() {
