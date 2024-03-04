@@ -31,23 +31,40 @@ class Piece extends Phaser.Physics.Arcade.Sprite {
 		this.currentSpace = space	
 	}
 
-	checkMoveToSpace(targetCoords) {
-		const validMoveSet = [[0, 0], [0, 1], this.currentSpace]
+	moveTo(space) {
+		this.scene.tweens.add({
+			targets: this,
+            x: space.x,
+            y: space.y,
+            ease: 'Power1',
+            duration: 1000,
+            onComplete: () => {
+                // Optional: Code to execute after the piece has finished moving
+            }
+        });
 
-		if (targetCoords === undefined || targetCoords === null) {
-			return 
-		}
-		for (var i = 0; i < validMoveSet.length; ++i) {
-			for (var j = 0; j < validMoveSet[i].length; ++j) {
-				if (validMoveSet[i][j] === targetCoords[j]) {
-					console.log("Valid Move")
-					this.setCurrentSpace(targetCoords)
-					return true
-				}
-			}
-		}
-		console.log('illegal move')
-		return false
+        // Update the current space of the piece
+        this.setCurrentSpace(space)
 	}
+
+	isValidMove(space) {
+		if (this.followsMovementRules(space)) {
+			console.log("follows movement rules")
+		}
+
+		if (this.isPathBlocked(space)) {
+			console.log("path is blocked")
+		}
+		return true
+	}
+
+	followsMovementRules(space) {
+		return true
+	}
+
+	isPathBlocked(space) {
+		return true
+	}
+	
 }
 

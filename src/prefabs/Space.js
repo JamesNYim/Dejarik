@@ -38,4 +38,8 @@ class Space extends Phaser.Physics.Arcade.Sprite {
 			
 		}
 	}
+
+	isOccupied() {
+		return true
+	}
 }

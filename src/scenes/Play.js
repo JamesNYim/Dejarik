@@ -47,7 +47,10 @@ class Play extends Phaser.Scene {
 			.setOrigin(0,0)
 		this.houjix.setSize(32, 32, false)
 		this.houjix.setInteractive({draggable: true})
-		this.physics.add.overlap(this.houjix, this.spaceGroup, this.pieceToSpaceHandler, null, this)
+		this.houjix.on('pointerup', (pointer) => {
+			this.onDragEnd(pointer, this.houjix)
+		})
+		//this.physics.add.overlap(this.houjix, this.spaceGroup, this.pieceSpaceCollider, null, this)
 	}
 
 	update() {
@@ -63,23 +66,32 @@ class Play extends Phaser.Scene {
 		return true
 	}
 
-	pieceToSpace(piece, space) {
-		
-		
-	}
-
-	pieceToSpaceHandler(piece, space) {
-		
-		piece.on('pointerup', () => this.checkValidMove(piece, space))
-	}
-
-	checkValidMove(piece, space) {
-		//console.log(piece.getCurrentSpace())
-		if (piece.getCurrentSpace() === undefined || piece.getCurrentSpace() === null) {
-			piece.setCurrentSpace(space.boardCoords)
-			return
+	onDragEnd(pointer, piece) {
+		let finalSpace = this.getFinalSpace(pointer.x, pointer.y) 
+		if (piece.isValidMove(finalSpace)) {
+			console.log("inSpace")
+			piece.moveTo(finalSpace)
 		}
-		piece.checkMoveToSpace(space.boardCoords)
-		//console.log("switched spaces")
+		else {
+			console.log("illegal move")
+		}
+	}
+
+	getFinalSpace(x, y) {
+		for (let space of this.spaceGroup.getChildren()) {
+			if (this.isInsideSpace(x, y, space)) {
+				return space
+			}
+		}
+		return null
+	}
+
+	isInsideSpace(x, y, space) {
+		let leftWall = space.x - space.width / 2
+		let rightWall = space.x + space.width /2
+		let topWall = space.y - space.height / 2
+		let botWall = space.y + space.height / 2
+
+		return x >= leftWall && x <= rightWall && y >= topWall && y <= botWall
 	}
 }
