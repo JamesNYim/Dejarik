@@ -3,7 +3,7 @@ class Piece extends Phaser.Physics.Arcade.Sprite {
 		super(scene,x, y, texture, frame)
 		this.health = health
 		this.attack = attack
-		this.currentSpace = null
+		this.currentSpace = [10, 2]
 		scene.pieceStateMachine = new StateMachine('idle', {
 			idle: new IdleState(),
 			move: new MoveState(),
@@ -24,6 +24,7 @@ class Piece extends Phaser.Physics.Arcade.Sprite {
 	}
 
 	getCurrentSpace() {
+		console.log(`getCurrentSpace(): ${this.currentSpace}`)
 		return this.currentSpace
 	}
 
@@ -32,6 +33,9 @@ class Piece extends Phaser.Physics.Arcade.Sprite {
 	}
 
 	moveTo(space) {
+		// Update the current space of the piece
+        this.setCurrentSpace(space)
+
 		this.scene.tweens.add({
 			targets: this,
             x: space.x,
@@ -43,13 +47,13 @@ class Piece extends Phaser.Physics.Arcade.Sprite {
             }
         });
 
-        // Update the current space of the piece
-        this.setCurrentSpace(space)
+        
 	}
 
 	isValidMove(space) {
-		if (this.followsMovementRules(space)) {
-			console.log("follows movement rules")
+		console.log(`Space coords: ${space.boardCoords}`)
+		if (!this.followsMovementRules(space)) {
+			return false
 		}
 
 		if (this.isPathBlocked(space)) {
@@ -59,7 +63,26 @@ class Piece extends Phaser.Physics.Arcade.Sprite {
 	}
 
 	followsMovementRules(space) {
-		return true
+		let up = [-4, -1]
+		let down = [4, 1]
+		let right = [1, 0]
+		let left = [-1, 0]
+		let upRight = [-4, 1]
+		let upLeft = [-5, 1]
+		let downRight = [5, 1]
+		let downLeft = [3, 1]
+
+		let moveSet = [up, down, right, left, upRight, upLeft, downRight, downLeft]
+		let currentSpace = this.getCurrentSpace()
+		for (let i = 0; i < moveSet.length; ++i){
+			if (currentSpace[0] + moveSet[i][0] == space.boardCoords[0] && 
+				currentSpace[1] + moveSet[i][1] == space.boardCoords[1])
+				{
+					return true
+				} 
+		}
+		return false
+		
 	}
 
 	isPathBlocked(space) {
