@@ -1,4 +1,4 @@
-class Houjix extends Piece {
+class Ghhk extends Piece {
 	constructor(scene, x, y, texture, frame,
 		idleAnimationSheet,
 		moveAnimation,
@@ -9,7 +9,7 @@ class Houjix extends Piece {
 			moveAnimation,
 			attackAnimation,
 			deadAnimation)
-		this.animsKey = 'houjixIdle'
+		this.animsKey = 'ghhkIdle'
 		this.idleAnimation = this.scene.anims.create({
 			key: this.animsKey,
 			repeat: -1,
@@ -23,3 +23,4 @@ class Houjix extends Piece {
 
 	}
 }
+

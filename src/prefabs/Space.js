@@ -14,6 +14,8 @@ class Space extends Phaser.Physics.Arcade.Sprite {
 	spawnBoundary(x, y, boardCoords) {
 		var spaceBoundary = this.scene.add.rectangle(x, y, this.width, this.height)
 		spaceBoundary.boardCoords = boardCoords
+		spaceBoundary.x = x
+		spaceBoundary.y = y
 		this.scene.physics.world.enable(spaceBoundary)
 		this.group.add(spaceBoundary)
 	}

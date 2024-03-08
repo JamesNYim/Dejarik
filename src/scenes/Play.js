@@ -6,14 +6,48 @@ class Play extends Phaser.Scene {
 	preload() {
 		this.load.image('boardSprite', './assets/BoardAssets/DejarikBoard.png')
 		this.load.image('white8x8', './assets/BoardAssets/White_8x8.png')
-		this.load.image('houjixSprite', './assets/houjix.png')
-		this.load.spritesheet('houjixIdleSheet', './assets/houjixAssets/houjixStatic.png',
-			{
-				frameWidth: 32,
-				FrameHeight: 32,
-				startFrame: 0,
-				endFrame: 1
-			})
+		
+		this.load.image('houjixSprite', './assets/pieceAssets/houjixAssets/houjix.png')
+		this.load.spritesheet('houjixIdleSheet', './assets/pieceAssets/houjixAssets/houjixStatic.png',
+		{
+			frameWidth: 32,
+			frameHeight: 32,
+			startFrame: 0,
+			endFrame: 1
+		})
+		this.load.image('ghhkSprite', './assets/pieceAssets/GhhkAssets/ghhk-1.png')
+		this.load.spritesheet('ghhkIdleSheet', './assets/pieceAssets/GhhkAssets/spritesheet.png',
+		{
+			frameWidth: 32,
+			frameHeight: 32,
+			startFrame: 0,
+			endFrame: 1
+		})
+		this.load.image('klorslugSprite', './assets/pieceAssets/klorslugAssets/klorslug-1.png')
+		this.load.spritesheet('klorslugIdleSheet', './assets/pieceAssets/klorslugAssets/spritesheet.png',
+		{
+			frameWidth: 32,
+			frameHeight: 32,
+			startFrame: 0,
+			endFrame: 1
+		})
+		this.load.image('savripSprite', './assets/pieceAssets/SavripAssets/MantellianSavrip-1.png')
+		this.load.spritesheet('savripIdleSheet', './assets/pieceAssets/SavripAssets/spritesheet.png',
+		{
+			frameWidth: 32,
+			frameHeight: 32,
+			startFrame: 0,
+			endFrame: 1
+		})
+		this.load.image('striderSprite', './assets/pieceAssets/StriderAssets/strider-1.png')
+		this.load.spritesheet('striderIdleSheet', './assets/pieceAssets/StriderAssets/spritesheet.png',
+		{
+			frameWidth: 32,
+			frameHeight: 32,
+			startFrame: 0,
+			endFrame: 1
+		})
+	
 	}
 
 	create() {
@@ -50,7 +84,21 @@ class Play extends Phaser.Scene {
 		this.houjix.on('pointerup', (pointer) => {
 			this.onDragEnd(pointer, this.houjix)
 		})
-		//this.physics.add.overlap(this.houjix, this.spaceGroup, this.pieceSpaceCollider, null, this)
+
+		this.ghhk = new Ghhk(
+			this,
+			game.config.width / 2 - 10,
+			game.config.height / 2 - 12,
+			'ghhkSprite',
+			0,
+			'ghhkIdleSheet')
+			.setOrigin(0,0)
+		this.ghhk.setSize(32, 32, false)
+		this.ghhk.setInteractive({draggable: true})
+		this.ghhk.on('pointerup', (pointer) => {
+			this.onDragEnd(pointer, this.ghhk)
+		})
+
 	}
 
 	update() {
@@ -68,13 +116,7 @@ class Play extends Phaser.Scene {
 
 	onDragEnd(pointer, piece) {
 		let finalSpace = this.getFinalSpace(pointer.x, pointer.y) 
-		if (piece.isValidMove(finalSpace)) {
-			console.log("inSpace")
-			piece.moveTo(finalSpace)
-		}
-		else {
-			console.log("illegal move")
-		}
+		piece.moveTo(finalSpace)
 	}
 
 	getFinalSpace(x, y) {
