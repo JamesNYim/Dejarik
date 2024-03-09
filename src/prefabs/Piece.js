@@ -1,5 +1,5 @@
 class Piece extends Phaser.Physics.Arcade.Sprite {
-	constructor(scene, x, y, texture, frame,
+	constructor(scene, x, y, texture, frame, name,
 		idleAnimationSheet,
 		moveAnimation,
 		attackAnimation,
@@ -8,6 +8,7 @@ class Piece extends Phaser.Physics.Arcade.Sprite {
 		super(scene, x, y, texture, frame)
 		this.scene = scene
 		scene.add.existing(this)
+		this.name = name
 	
 		//this.health = health
 		//this.attack = attack
@@ -24,8 +25,6 @@ class Piece extends Phaser.Physics.Arcade.Sprite {
 		this.animsKey = ''
 		this.idleAnimation = null
 
-		
-		
 		scene.physics.add.existing(this)
 		scene.physics.world.enable(this)
 	}
@@ -52,16 +51,7 @@ class Piece extends Phaser.Physics.Arcade.Sprite {
 	}
 
 	setCurrentSpace(space) {
-		/*
-		console.log(`this.currentSpace.boardCoords set to: ${this.currentSpace.boardCoords}`)
-		console.log(`this.currentSpace.x set to: ${this.currentSpace.x}`)
-		console.log(`this.currentSpace.y set to: ${this.currentSpace.y}`) */
 		this.currentSpace = space
-		/*
-		console.log(`space.boardCoords set to: ${space.boardCoords}`)
-		console.log(`space.x set to: ${space.x}`)
-		console.log(`space.y set to: ${space.y}`)
-		*/
 	}
 
 	moveTo(space) {
@@ -104,7 +94,7 @@ class IdleState extends State {
 	enterState(scene, piece) {
 		//Play Initial State Animation
 		//In this case its IdleAnimation
-		console.log(`${piece} went Idle`)
+		console.log(`${piece.name} went Idle`)
 		piece.idle()
 		
 	}

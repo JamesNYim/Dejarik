@@ -76,6 +76,7 @@ class Play extends Phaser.Scene {
 			game.config.height / 2 - 12,
 			'houjixSprite',
 			0,
+			'Houjix',
 			'houjixIdleSheet')
 			.setOrigin(0,0)
 		this.houjix.setSize(32, 32, false)
@@ -91,6 +92,7 @@ class Play extends Phaser.Scene {
 			game.config.height / 2 - 12,
 			'ghhkSprite',
 			0,
+			'Ghhk',
 			'ghhkIdleSheet')
 			.setOrigin(0,0)
 		this.ghhk.setSize(32, 32, false)
@@ -99,12 +101,43 @@ class Play extends Phaser.Scene {
 			this.onDragEnd(pointer, this.ghhk)
 		})
 	
+		this.strider = new Strider(
+			this,
+			game.config.width / 2 - 10,
+			game.config.height / 2 - 12,
+			'striderSprite',
+			0,
+			'Strider',
+			'striderIdleSheet')
+			.setOrigin(0,0)
+		this.strider.setSize(32, 32, false)
+		this.strider.setInteractive({draggable: true})
+		this.strider.on('pointerup', (pointer) => {
+			this.onDragEnd(pointer, this.strider)
+		})
+	
+		this.savrip = new Savrip(
+			this,
+			game.config.width / 10,
+			game.config.height / 12,
+			'savripSprite',
+			0,
+			'Savrip',
+			'savripIdleSheet')
+			.setOrigin(0,0)
+		this.savrip.setSize(32, 32, false)
+		this.savrip.setInteractive({draggable: true})
+		this.savrip.on('pointerup', (pointer) => {
+			this.onDragEnd(pointer, this.savrip)
+		})
+
 		this.klorslug = new Klorslug(
 			this,
 			game.config.width / 2 - 10,
 			game.config.height / 2 - 12,
 			'klorslugSprite',
 			0,
+			'Klorslug',
 			'klorslugIdleSheet')
 			.setOrigin(0,0)
 		this.klorslug.setSize(32, 32, false)
@@ -112,6 +145,7 @@ class Play extends Phaser.Scene {
 		this.klorslug.on('pointerup', (pointer) => {
 			this.onDragEnd(pointer, this.klorslug)
 		})
+		
 
 	}
 
@@ -119,10 +153,11 @@ class Play extends Phaser.Scene {
 		this.houjix.pieceStateMachine.step()
 		this.ghhk.pieceStateMachine.step()
 		this.klorslug.pieceStateMachine.step()
+		this.savrip.pieceStateMachine.step()
+		this.strider.pieceStateMachine.step()
 	}
 
 	pointerDown() {
-		//console.log('pointer down')
 		return true
 	}
 

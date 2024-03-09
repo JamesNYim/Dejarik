@@ -13,7 +13,7 @@ class Klorslug extends Piece {
 		this.idleAnimation = this.scene.anims.create({
 			key: this.animsKey,
 			repeat: -1,
-			framerate: 8,
+			framerate: 2,
 			frames: this.scene.anims.generateFrameNumbers(
 				this.idleAnimationSheet, {
 					frames: [0, 1, 1, 0],

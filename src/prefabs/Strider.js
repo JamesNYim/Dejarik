@@ -4,81 +4,22 @@ class Strider extends Piece {
 		moveAnimation,
 		attackAnimation,
 		deadAnimation) {
-		super(scene, x, y, texture, frame)
-		this.scene = scene
-		scene.add.existing(this)
-
-		this.idleAnimationSheet = idleAnimationSheet
+		super(scene, x, y, texture, frame,
+			idleAnimationSheet,
+			moveAnimation,
+			attackAnimation,
+			deadAnimation)
+		this.animsKey = 'striderIdle'
 		this.idleAnimation = this.scene.anims.create({
-			key: 'idleAnim',
+			key: this.animsKey,
 			repeat: -1,
-			frameRate: 8,
+			framerate: 2,
 			frames: this.scene.anims.generateFrameNumbers(
-				this.idleAnimation, {
+				this.idleAnimationSheet, {
 					frames: [0, 1, 1, 0],
 				}
 			)
-		})	
-		
-	}
-
-	changeState(state) {
+		})
 
 	}
 }
-
-/*
-class IdleState extends State {
-	enterState(scene, piece) {
-		//Play Initial State Animation
-		//In this case its IdleAnimation
-		piece.anims.play('idleAnim')
-	}
-
-	executeState(scene, piece) {
-		//Transition to move if it is the players turn and
-		//if the selected board space is a valid spot
-		//this.stateMachine.transition('move')
-		piece.on('drag', (pointer, dragX, dragY) => this.stateMachine.transition('move', dragX, dragY))
-
-		//Transition to attack if it is the players turn
-		//and there is an enemy in a valid spot
-		//this.stateMachine.transition('attack')
-
-		//Transition to dead if no health left
-		//this.stateMachine.transition('dead')
-	}
-}
-
-class MoveState extends State {
-	enterState(scene, piece, x, y) {
-		piece.move(x, y)
-	}
-	executeState(scene, piece, x, y) {
-		//Move piece to selected board spot
-		//Animate movement to the spot
-		//Once it reaches spot go back to idle
-		//this.stateMachine.transition('idle')
-		piece.on('pointerup', () => this.stateMachine.transition('idle'))
-		
-	}
-}
-
-class AttackState extends State {
-	enterState(scene, piece) {
-		//Attack selected piece 
-		//Once attack is finished animation and all
-		//Go back to idle
-		//this.stateMachine.transition('idle')
-	}
-}
-
-class DeadState extends State {
-	enterState(scene, piece) {
-		console.log("died")
-		piece.anims.stop('idleAnim')
-		//Piece has died
-		// We cannot leave this state 
-	}
-}
-*/
