@@ -13,7 +13,7 @@ class Piece extends Phaser.Physics.Arcade.Sprite {
 		//this.attack = attack
 		this.currentSpace = {boardCoords: [10, 2], x: 365, y:238}
 		
-		scene.pieceStateMachine = new StateMachine('idle', {
+		this.pieceStateMachine = new StateMachine('idle', {
 			idle: new IdleState(),
 			move: new MoveState(),
 			attack: new AttackState(),
@@ -23,6 +23,7 @@ class Piece extends Phaser.Physics.Arcade.Sprite {
 		this.idleAnimationSheet = idleAnimationSheet
 		this.animsKey = ''
 		this.idleAnimation = null
+
 		
 		
 		scene.physics.add.existing(this)
@@ -64,32 +65,7 @@ class Piece extends Phaser.Physics.Arcade.Sprite {
 	}
 
 	moveTo(space) {
-		const originalSpace = this.currentSpace
-		if (this.isValidMove(space))
-		{
-			this.scene.tweens.add({
-				targets: this,
-				x: space.x,
-				y: space.y,
-				ease: 'Power1',
-				duration: 1000,
-				onComplete: () => {
-					this.setCurrentSpace(space)
-				}		
-        	});
-		}
-		else {
-			this.scene.tweens.add({
-				targets: this,
-				x: originalSpace.x,
-				y: originalSpace.y,
-				ease: 'Power1',
-				duration: 1000,
-				onComplete: () => {
-					this.setCurrentSpace(originalSpace)
-				}		
-        	});
-		}
+		
 	}
 
 	isValidMove(space) {
@@ -122,13 +98,6 @@ class Piece extends Phaser.Physics.Arcade.Sprite {
 		
 	}
 
-	isPathBlocked(space) {
-		return true
-	}
-
-	playIdleAnim() {
-		this.anims.play(this.animsKey)
-	}
 }
 
 class IdleState extends State {
@@ -157,7 +126,6 @@ class IdleState extends State {
 
 class MoveState extends State {
 	enterState(scene, piece, x, y) {
-		console.log("Move State")
 		piece.move(x, y)
 	}
 	executeState(scene, piece, x, y) {
@@ -166,7 +134,6 @@ class MoveState extends State {
 		//Once it reaches spot go back to idle
 		//this.stateMachine.transition('idle')
 		piece.on('pointerup', () => this.stateMachine.transition('idle'))
-		
 	}
 }
 

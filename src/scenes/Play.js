@@ -70,7 +70,6 @@ class Play extends Phaser.Scene {
 			.setOrigin(0, 0)
 
 		this.space.spawnBoard()
-		
 		this.houjix = new Houjix(
 			this,
 			game.config.width / 2 - 10,
@@ -85,6 +84,7 @@ class Play extends Phaser.Scene {
 			this.onDragEnd(pointer, this.houjix)
 		})
 
+
 		this.ghhk = new Ghhk(
 			this,
 			game.config.width / 2 - 10,
@@ -98,11 +98,27 @@ class Play extends Phaser.Scene {
 		this.ghhk.on('pointerup', (pointer) => {
 			this.onDragEnd(pointer, this.ghhk)
 		})
+	
+		this.klorslug = new Klorslug(
+			this,
+			game.config.width / 2 - 10,
+			game.config.height / 2 - 12,
+			'klorslugSprite',
+			0,
+			'klorslugIdleSheet')
+			.setOrigin(0,0)
+		this.klorslug.setSize(32, 32, false)
+		this.klorslug.setInteractive({draggable: true})
+		this.klorslug.on('pointerup', (pointer) => {
+			this.onDragEnd(pointer, this.klorslug)
+		})
 
 	}
 
 	update() {
-		this.pieceStateMachine.step()
+		this.houjix.pieceStateMachine.step()
+		this.ghhk.pieceStateMachine.step()
+		this.klorslug.pieceStateMachine.step()
 	}
 
 	pointerDown() {
