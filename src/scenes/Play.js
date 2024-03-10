@@ -56,20 +56,9 @@ class Play extends Phaser.Scene {
 			0,
 			'boardSprite')
 			.setOrigin(0,0)
-		
 		this.spaceGroup = this.physics.add.group()
-		this.space = new Space(
-			this,
-			81,
-			54,
-			'white8x8',
-			0,
-			86,
-			86,
-			this.spaceGroup)
-			.setOrigin(0, 0)
+		this.spawnBoard()
 
-		this.space.spawnBoard()
 		this.houjix = new Houjix(
 			this,
 			game.config.width / 2 - 10,
@@ -157,6 +146,40 @@ class Play extends Phaser.Scene {
 		this.strider.pieceStateMachine.step()
 	}
 
+	spawnBoard() {
+		let initX = 38
+		let initY = 10
+		let currentX = initX
+		let currentY = initY
+		let height = 88
+		let width = 86
+		var xCoord = 0
+		var yCoord = 0
+		for (var i = 1; i <= 25; ++i) {
+			var boardCoords = [xCoord, yCoord]
+			let space = new Space(
+				this,
+				currentX,
+				currentY,
+				null,
+				0,
+				width,
+				height,
+				this.spaceGroup,
+				boardCoords)
+				.setOrigin(0, 0)
+				if (i % 5 == 0) {
+					currentX = initX
+					currentY += height + 4
+					yCoord += 1
+				}
+				else {
+					currentX += width + 6
+					xCoord += 1
+				}
+			space.setBodySize(width, height)
+		}
+	}
 	pointerDown() {
 		return true
 	}

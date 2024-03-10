@@ -1,47 +1,16 @@
 class Space extends Phaser.Physics.Arcade.Sprite {
-	constructor(scene, x, y, texture, frame, width, height, spaceGroup) {
+	constructor(scene, x, y, texture, frame, width, height, spaceGroup, boardCoords) {
 		super(scene,x, y, texture, frame)
 		this.scene = scene
 		this.x = x
 		this.y = y
 		this.width = width
 		this.height = height
+		this.boardCoords = boardCoords
 		this.group = spaceGroup
-		
-		
-	}
-
-	spawnBoundary(x, y, boardCoords) {
-		var spaceBoundary = this.scene.add.rectangle(x, y, this.width, this.height)
-		spaceBoundary.boardCoords = boardCoords
-		spaceBoundary.x = x
-		spaceBoundary.y = y
-		this.scene.physics.world.enable(spaceBoundary)
-		this.group.add(spaceBoundary)
-	}
-
-	spawnBoard() {
-		var x = this.x
-		var y = this.y
-		var xCoord = 0
-		var yCoord = 0
-		for (var i = 1; i <= 25; i++) {
-			var boardCoords = [xCoord, yCoord]
-			this.spawnBoundary(x, y, boardCoords)
-			if (i % 5 == 0) {
-				y += this.height + 6
-				x = this.x
-				yCoord += 1
-			}
-			else {
-				x += this.width + 6
-				xCoord += 1
-			}
-			
-		}
-	}
-
-	isOccupied() {
-		return true
+		//this.spaceBoundary = this.scene.add.rectangle(this.x, this.y, this.width, this.height)
+		this.scene.physics.world.enable(this)
+		this.group.add(this)
+		console.log(this)
 	}
 }
