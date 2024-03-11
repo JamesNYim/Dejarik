@@ -59,6 +59,31 @@ class Play extends Phaser.Scene {
 		this.spaceGroup = this.physics.add.group()
 		this.spawnBoard()
 
+		this.pieceGroup = this.physics.add.group()
+		this.createPieces()
+		
+		/*this.physics.add.overlap(this.spaceGroup, this.pieceGroup, (space, piece) => {
+			if (piece.pieceStateMachine.currentState !== 'move') {
+				//console.log('not moving')
+				if (piece.getCurrentSpace() !== space) {
+					piece.setCurrentSpace(space)
+				}
+			}
+			
+		})
+		*/
+
+	}
+
+	update() {
+		this.houjix.pieceStateMachine.step()
+		this.ghhk.pieceStateMachine.step()
+		this.klorslug.pieceStateMachine.step()
+		this.savrip.pieceStateMachine.step()
+		this.strider.pieceStateMachine.step()
+	}
+
+	createPieces() {
 		this.houjix = new Houjix(
 			this,
 			game.config.width / 2 - 10,
@@ -66,12 +91,14 @@ class Play extends Phaser.Scene {
 			'houjixSprite',
 			0,
 			'Houjix',
+			this.pieceGroup,
 			'houjixIdleSheet')
 			.setOrigin(0,0)
 		this.houjix.setSize(32, 32, false)
 		this.houjix.setInteractive({draggable: true})
 		this.houjix.on('pointerup', (pointer) => {
-			this.onDragEnd(pointer, this.houjix)
+			this.houjix.pieceStateMachine.transition('idle');
+			this.checkOverlap(this.houjix)
 		})
 
 
@@ -82,12 +109,14 @@ class Play extends Phaser.Scene {
 			'ghhkSprite',
 			0,
 			'Ghhk',
+			this.pieceGroup,
 			'ghhkIdleSheet')
 			.setOrigin(0,0)
 		this.ghhk.setSize(32, 32, false)
 		this.ghhk.setInteractive({draggable: true})
 		this.ghhk.on('pointerup', (pointer) => {
-			this.onDragEnd(pointer, this.ghhk)
+			this.ghhk.pieceStateMachine.transition('idle');
+			this.checkOverlap(this.ghhk)
 		})
 	
 		this.strider = new Strider(
@@ -97,12 +126,14 @@ class Play extends Phaser.Scene {
 			'striderSprite',
 			0,
 			'Strider',
+			this.pieceGroup,
 			'striderIdleSheet')
 			.setOrigin(0,0)
 		this.strider.setSize(32, 32, false)
 		this.strider.setInteractive({draggable: true})
 		this.strider.on('pointerup', (pointer) => {
-			this.onDragEnd(pointer, this.strider)
+			this.strider.pieceStateMachine.transition('idle');
+			this.checkOverlap(this.strider)
 		})
 	
 		this.savrip = new Savrip(
@@ -112,12 +143,15 @@ class Play extends Phaser.Scene {
 			'savripSprite',
 			0,
 			'Savrip',
-			'savripIdleSheet')
+			this.pieceGroup,
+			'savripIdleSheet'
+			)
 			.setOrigin(0,0)
 		this.savrip.setSize(32, 32, false)
 		this.savrip.setInteractive({draggable: true})
 		this.savrip.on('pointerup', (pointer) => {
-			this.onDragEnd(pointer, this.savrip)
+			this.savrip.pieceStateMachine.transition('idle');
+			this.checkOverlap(this.savrip)
 		})
 
 		this.klorslug = new Klorslug(
@@ -127,23 +161,29 @@ class Play extends Phaser.Scene {
 			'klorslugSprite',
 			0,
 			'Klorslug',
+			this.pieceGroup,
 			'klorslugIdleSheet')
 			.setOrigin(0,0)
 		this.klorslug.setSize(32, 32, false)
 		this.klorslug.setInteractive({draggable: true})
 		this.klorslug.on('pointerup', (pointer) => {
-			this.onDragEnd(pointer, this.klorslug)
+			this.klorslug.pieceStateMachine.transition('idle');
+			this.checkOverlap(this.klorslug)
 		})
-		
-
 	}
 
-	update() {
-		this.houjix.pieceStateMachine.step()
-		this.ghhk.pieceStateMachine.step()
-		this.klorslug.pieceStateMachine.step()
-		this.savrip.pieceStateMachine.step()
-		this.strider.pieceStateMachine.step()
+	checkOverlap(piece) {
+		let overlappedSpace = null
+		this.spaceGroup.getChildren().forEach(space => {
+			if (this.isInsideSpace(piece.x, piece.y, space)) {
+				overlappedSpace = space;
+			}
+		});
+	
+		if (overlappedSpace) {
+			piece.setCurrentSpace(overlappedSpace);
+			console.log(`${piece.name} finished dragging, overlapping with space:`, overlappedSpace.boardCoords);
+		}
 	}
 
 	spawnBoard() {
@@ -187,21 +227,6 @@ class Play extends Phaser.Scene {
 	pointerOver() {
 		return true
 	}
-
-	onDragEnd(pointer, piece) {
-		let finalSpace = this.getFinalSpace(pointer.x, pointer.y) 
-		piece.moveTo(finalSpace)
-	}
-
-	getFinalSpace(x, y) {
-		for (let space of this.spaceGroup.getChildren()) {
-			if (this.isInsideSpace(x, y, space)) {
-				return space
-			}
-		}
-		return null
-	}
-
 	isInsideSpace(x, y, space) {
 		let leftWall = space.x - space.width / 2
 		let rightWall = space.x + space.width /2

@@ -8,7 +8,6 @@ class Space extends Phaser.Physics.Arcade.Sprite {
 		this.height = height
 		this.boardCoords = boardCoords
 		this.group = spaceGroup
-		//this.spaceBoundary = this.scene.add.rectangle(this.x, this.y, this.width, this.height)
 		this.scene.physics.world.enable(this)
 		this.group.add(this)
 		console.log(this)

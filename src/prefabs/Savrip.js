@@ -1,11 +1,11 @@
 class Savrip extends Piece {
-	constructor(scene, x, y, texture, frame,
+	constructor(scene, x, y, texture, frame, name, pieceGroup,
 		idleAnimationSheet,
 		moveAnimation,
 		attackAnimation,
 		deadAnimation) {
 		console.log("savrip created")
-		super(scene, x, y, texture, frame,
+		super(scene, x, y, texture, frame, name, pieceGroup,
 			idleAnimationSheet,
 			moveAnimation,
 			attackAnimation,

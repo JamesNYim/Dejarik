@@ -1,18 +1,21 @@
 class Piece extends Phaser.Physics.Arcade.Sprite {
 	constructor(scene, x, y, texture, frame, name,
+		pieceGroup,
 		idleAnimationSheet,
 		moveAnimation,
 		attackAnimation,
-		deadAnimation) {
+		deadAnimation,
+		) {
 		
 		super(scene, x, y, texture, frame)
 		this.scene = scene
 		scene.add.existing(this)
 		this.name = name
+		this.group = pieceGroup
 	
 		//this.health = health
 		//this.attack = attack
-		this.currentSpace = {boardCoords: [10, 2], x: 365, y:238}
+		this.currentSpace = null
 		
 		this.pieceStateMachine = new StateMachine('idle', {
 			idle: new IdleState(),
@@ -25,8 +28,10 @@ class Piece extends Phaser.Physics.Arcade.Sprite {
 		this.animsKey = ''
 		this.idleAnimation = null
 
-		scene.physics.add.existing(this)
-		scene.physics.world.enable(this)
+		this.scene.physics.world.enable(this)
+		this.group.add(this)
+		console.log(this)
+		
 	}
 
 	move(xCoord, yCoord) {
@@ -36,6 +41,7 @@ class Piece extends Phaser.Physics.Arcade.Sprite {
 
 	idle() {
 		this.anims.play(this.animsKey)
+
 	}
 
 	getHealth() {
@@ -52,10 +58,6 @@ class Piece extends Phaser.Physics.Arcade.Sprite {
 
 	setCurrentSpace(space) {
 		this.currentSpace = space
-	}
-
-	moveTo(space) {
-		
 	}
 
 	isValidMove(space) {
@@ -124,6 +126,10 @@ class MoveState extends State {
 		//Once it reaches spot go back to idle
 		//this.stateMachine.transition('idle')
 		piece.on('pointerup', () => this.stateMachine.transition('idle'))
+	}
+
+	leaveState(scene, piece) {
+		console.log(`${piece.name} stopped being dragged`)
 	}
 }
 
