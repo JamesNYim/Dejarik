@@ -5,7 +5,7 @@ let config = {
 		autoCenter: Phaser.Scale.CENTER_BOTH,
 		width: 512,
 		height: 512,
-		zoom: 5,
+		zoom: 10,
 		pixelArt: true
 	},
 	physics: {
@@ -14,7 +14,7 @@ let config = {
 			debug: true
 		}
 	},
-	scene: [Play, Menu]
+	scene: [Menu, Play]
 }
 
 let game = new Phaser.Game(config)

@@ -8,8 +8,17 @@ class Space extends Phaser.Physics.Arcade.Sprite {
 		this.height = height
 		this.boardCoords = boardCoords
 		this.group = spaceGroup
+		this.pieces = []
 		this.scene.physics.world.enable(this)
 		this.group.add(this)
 		console.log(this)
+	}
+
+	getPieces() {
+		return this.pieces
+	}
+
+	addPiece(piece) {
+		this.pieces.push(piece)
 	}
 }

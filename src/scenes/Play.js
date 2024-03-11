@@ -181,9 +181,15 @@ class Play extends Phaser.Scene {
 		});
 	
 		if (overlappedSpace) {
-			piece.setCurrentSpace(overlappedSpace);
-			console.log(`${piece.name} finished dragging, overlapping with space:`, overlappedSpace.boardCoords);
+			piece.setCurrentSpace(overlappedSpace)
+			overlappedSpace.addPiece(piece)
+			if (overlappedSpace.getPieces().length > 0) {
+				overlappedSpace.getPieces().forEach(p => {
+					console.log(`[${overlappedSpace.boardCoords}] Pieces occupying: ${p}`)
+				})
+			}
 		}
+		
 	}
 
 	spawnBoard() {
