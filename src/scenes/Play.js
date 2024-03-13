@@ -148,6 +148,7 @@ class Play extends Phaser.Scene {
 		this.savrip.setSize(32, 32, false)
 		this.savrip.setInteractive({draggable: true})
 		this.savrip.on('pointerup', (pointer) => {
+			console.log(`savrip released`)
 			this.savrip.pieceStateMachine.transition('idle');
 			this.checkOverlap(this.savrip)
 		})
@@ -165,33 +166,30 @@ class Play extends Phaser.Scene {
 		this.klorslug.setSize(32, 32, false)
 		this.klorslug.setInteractive({draggable: true})
 		this.klorslug.on('pointerup', (pointer) => {
-			console.log("pointer up")
+			console.log(`klorslug released`)
 			this.klorslug.pieceStateMachine.transition('idle');
 			this.checkOverlap(this.klorslug)
 		})
 	}
 
 	checkOverlap(piece) {
-		let overlappedSpace = null
 		this.spaceGroup.getChildren().forEach(space => {
+
 			if (this.isInsideSpace(piece.x, piece.y, space)) {
-				overlappedSpace = space;
-				overlappedSpace.getPieces()
+				if (piece.getCurrentSpace() !== space) {
+					piece.setCurrentSpace(space)
+				}
+
+				if (space.isOccupiedByMultiplePieces()) {
+					// Handle the case where multiple pieces are in the same space
+					console.log(`Conflict in space ${space.boardCoords}:`, space.getPieces().map(p => p.name));
+					// You can add your game logic here, for example, trigger an attack or merge pieces
+				}
+	
+				return;
 			}
 		});
-	
-		if (overlappedSpace) {
-			console.log(`${piece.name} overlapped with space at ${overlappedSpace.boardCoords}`);
-			piece.setCurrentSpace(overlappedSpace)
-			//overlappedSpace.addPiece(piece)
-			/*
-			if (overlappedSpace.getPieces().length > 0) {
-				overlappedSpace.getPieces().forEach(p => {
-					console.log(`[${overlappedSpace.boardCoords}] Pieces occupying: ${p.name}`)
-				})
-			}
-			*/
-		}
+		
 		
 	}
 
@@ -204,8 +202,8 @@ class Play extends Phaser.Scene {
 		let width = 86
 		var xCoord = 0
 		var yCoord = 0
-		for (var xCoord = 0; xCoord < 5; ++xCoord) {
-			for (var yCoord = 0; yCoord < 5; ++yCoord) {
+		for (var yCoord = 0; yCoord < 5; ++yCoord) {
+			for (var xCoord = 0; xCoord < 5; ++xCoord) {
 				var boardCoords = [xCoord, yCoord]
 				let space = new Space(
 					this,
@@ -235,10 +233,10 @@ class Play extends Phaser.Scene {
 		return true
 	}
 	isInsideSpace(x, y, space) {
-		let leftWall = space.x - space.width / 2
-		let rightWall = space.x + space.width /2
-		let topWall = space.y - space.height / 2
-		let botWall = space.y + space.height / 2
+		let leftWall = space.x;
+		let rightWall = space.x + space.width;
+		let topWall = space.y;
+		let botWall = space.y + space.height;
 
 		return x >= leftWall && x <= rightWall && y >= topWall && y <= botWall
 	}

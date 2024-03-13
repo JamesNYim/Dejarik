@@ -14,7 +14,7 @@ class Space extends Phaser.Physics.Arcade.Sprite {
 	}
 
 	getPieces() {
-		return this.pieces
+		return this.pieces;
 	}
 
 	addPiece(piece) {
@@ -22,11 +22,18 @@ class Space extends Phaser.Physics.Arcade.Sprite {
 			this.pieces.push(piece)
 			console.log(`Added ${piece.name} to space at ${this.boardCoords}`);
 		}
+		return;
 	}
 
 	removePiece(piece) {
 		this.pieces = this.pieces.filter(p => p !== piece)
-		console.log(`Removed ${piece.name} from ${this.boardCoords}. Remaining Pieces:`, this.pieces.map(p=>p.name))
+		console.log(`Removed ${piece.name} from ${this.boardCoords}. Remaining Pieces:`, this.pieces.map(p=>p.name));
+		return;
+	}
+
+	isOccupiedByMultiplePieces() {
+		console.log(this.pieces.length)
+		return this.pieces.length > 1;
 	}
 
 
