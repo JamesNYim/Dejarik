@@ -4,7 +4,6 @@ class Savrip extends Piece {
 		moveAnimation,
 		attackAnimation,
 		deadAnimation) {
-		console.log("savrip created")
 		super(scene, x, y, texture, frame, name, pieceGroup,
 			idleAnimationSheet,
 			moveAnimation,

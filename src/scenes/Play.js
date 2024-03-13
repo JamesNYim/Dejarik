@@ -51,6 +51,9 @@ class Play extends Phaser.Scene {
 	}
 
 	create() {
+		//Debugging:
+		keyJUMP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+
 		this.board = this.add.image(
 			0,
 			0,
@@ -61,21 +64,16 @@ class Play extends Phaser.Scene {
 
 		this.pieceGroup = this.physics.add.group()
 		this.createPieces()
-		
-		/*this.physics.add.overlap(this.spaceGroup, this.pieceGroup, (space, piece) => {
-			if (piece.pieceStateMachine.currentState !== 'move') {
-				//console.log('not moving')
-				if (piece.getCurrentSpace() !== space) {
-					piece.setCurrentSpace(space)
-				}
-			}
-			
-		})
-		*/
 
 	}
 
 	update() {
+		if (Phaser.Input.Keyboard.JustDown(keyJUMP)) {
+			this.pieceGroup.getChildren().forEach(p => {
+				console.log(`${p.name}'s current space is ${p.getCurrentSpace().boardCoords} with coordinates of ${p.x}, ${p.y}`)
+
+			})
+		}
 		this.houjix.pieceStateMachine.step()
 		this.ghhk.pieceStateMachine.step()
 		this.klorslug.pieceStateMachine.step()
@@ -86,8 +84,8 @@ class Play extends Phaser.Scene {
 	createPieces() {
 		this.houjix = new Houjix(
 			this,
-			game.config.width / 2 - 10,
-			game.config.height / 2 - 12,
+			164,
+			141,
 			'houjixSprite',
 			0,
 			'Houjix',
@@ -104,8 +102,8 @@ class Play extends Phaser.Scene {
 
 		this.ghhk = new Ghhk(
 			this,
-			game.config.width / 2 - 10,
-			game.config.height / 2 - 12,
+			243,
+			135,
 			'ghhkSprite',
 			0,
 			'Ghhk',
@@ -121,8 +119,8 @@ class Play extends Phaser.Scene {
 	
 		this.strider = new Strider(
 			this,
-			game.config.width / 2 - 10,
-			game.config.height / 2 - 12,
+			326,
+			316,
 			'striderSprite',
 			0,
 			'Strider',
@@ -138,8 +136,8 @@ class Play extends Phaser.Scene {
 	
 		this.savrip = new Savrip(
 			this,
-			game.config.width / 10,
-			game.config.height / 12,
+			328,
+			136,
 			'savripSprite',
 			0,
 			'Savrip',
@@ -156,8 +154,8 @@ class Play extends Phaser.Scene {
 
 		this.klorslug = new Klorslug(
 			this,
-			game.config.width / 2 - 10,
-			game.config.height / 2 - 12,
+			238,
+			309,
 			'klorslugSprite',
 			0,
 			'Klorslug',
@@ -167,6 +165,7 @@ class Play extends Phaser.Scene {
 		this.klorslug.setSize(32, 32, false)
 		this.klorslug.setInteractive({draggable: true})
 		this.klorslug.on('pointerup', (pointer) => {
+			console.log("pointer up")
 			this.klorslug.pieceStateMachine.transition('idle');
 			this.checkOverlap(this.klorslug)
 		})
@@ -177,17 +176,21 @@ class Play extends Phaser.Scene {
 		this.spaceGroup.getChildren().forEach(space => {
 			if (this.isInsideSpace(piece.x, piece.y, space)) {
 				overlappedSpace = space;
+				overlappedSpace.getPieces()
 			}
 		});
 	
 		if (overlappedSpace) {
+			console.log(`${piece.name} overlapped with space at ${overlappedSpace.boardCoords}`);
 			piece.setCurrentSpace(overlappedSpace)
-			overlappedSpace.addPiece(piece)
+			//overlappedSpace.addPiece(piece)
+			/*
 			if (overlappedSpace.getPieces().length > 0) {
 				overlappedSpace.getPieces().forEach(p => {
-					console.log(`[${overlappedSpace.boardCoords}] Pieces occupying: ${p}`)
+					console.log(`[${overlappedSpace.boardCoords}] Pieces occupying: ${p.name}`)
 				})
 			}
+			*/
 		}
 		
 	}
@@ -201,29 +204,27 @@ class Play extends Phaser.Scene {
 		let width = 86
 		var xCoord = 0
 		var yCoord = 0
-		for (var i = 1; i <= 25; ++i) {
-			var boardCoords = [xCoord, yCoord]
-			let space = new Space(
-				this,
-				currentX,
-				currentY,
-				null,
-				0,
-				width,
-				height,
-				this.spaceGroup,
-				boardCoords)
-				.setOrigin(0, 0)
-				if (i % 5 == 0) {
-					currentX = initX
-					currentY += height + 4
-					yCoord += 1
-				}
-				else {
-					currentX += width + 6
-					xCoord += 1
-				}
-			space.setBodySize(width, height)
+		for (var xCoord = 0; xCoord < 5; ++xCoord) {
+			for (var yCoord = 0; yCoord < 5; ++yCoord) {
+				var boardCoords = [xCoord, yCoord]
+				let space = new Space(
+					this,
+					currentX,
+					currentY,
+					null,
+					0,
+					width,
+					height,
+					this.spaceGroup,
+					boardCoords)
+					.setOrigin(0, 0)
+				space.setBodySize(width, height)
+				currentX += width + 6
+			}
+			currentX = initX
+			currentY += height + 4
+
+			
 		}
 	}
 	pointerDown() {

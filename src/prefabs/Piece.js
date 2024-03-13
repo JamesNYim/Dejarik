@@ -30,8 +30,6 @@ class Piece extends Phaser.Physics.Arcade.Sprite {
 
 		this.scene.physics.world.enable(this)
 		this.group.add(this)
-		console.log(this)
-		
 	}
 
 	move(xCoord, yCoord) {
@@ -57,8 +55,14 @@ class Piece extends Phaser.Physics.Arcade.Sprite {
 	}
 
 	setCurrentSpace(space) {
+		if (this.currentSpace) {
+			this.currentSpace.removePiece(this)
+		}
 		this.currentSpace = space
-	}
+		if (space) {
+			space.addPiece(this)
+		}
+ 	}
 
 	isValidMove(space) {
 		if (!this.followsMovementRules(space)) {
@@ -96,7 +100,6 @@ class IdleState extends State {
 	enterState(scene, piece) {
 		//Play Initial State Animation
 		//In this case its IdleAnimation
-		console.log(`${piece.name} went Idle`)
 		piece.idle()
 		
 	}
