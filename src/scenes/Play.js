@@ -182,7 +182,14 @@ class Play extends Phaser.Scene {
 
 				if (space.isOccupiedByMultiplePieces()) {
 					// Handle the case where multiple pieces are in the same space
-					console.log(`Conflict in space ${space.boardCoords}:`, space.getPieces().map(p => p.name));
+					//console.log(`Conflict in space ${space.boardCoords}:`, space.getPieces().map(p => p.name));
+					space.getPieces().map(p => {
+						if (p.name !== piece.name) {
+							piece.pieceStateMachine.transition('attack', p)
+						}
+						//console.log(p.name)
+						
+					})
 					// You can add your game logic here, for example, trigger an attack or merge pieces
 				}
 	
@@ -225,13 +232,7 @@ class Play extends Phaser.Scene {
 			
 		}
 	}
-	pointerDown() {
-		return true
-	}
 
-	pointerOver() {
-		return true
-	}
 	isInsideSpace(x, y, space) {
 		let leftWall = space.x;
 		let rightWall = space.x + space.width;

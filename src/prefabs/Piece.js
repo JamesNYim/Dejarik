@@ -13,8 +13,8 @@ class Piece extends Phaser.Physics.Arcade.Sprite {
 		this.name = name
 		this.group = pieceGroup
 	
-		//this.health = health
-		//this.attack = attack
+		this.health = 10
+		this.attack = 10
 		this.currentSpace = null
 		
 		this.pieceStateMachine = new StateMachine('idle', {
@@ -39,17 +39,25 @@ class Piece extends Phaser.Physics.Arcade.Sprite {
 
 	idle() {
 		this.anims.play(this.animsKey)
-
 	}
 
 	getHealth() {
 		return this.health
 	}
 
+	removeHealth(dmg) {
+		this.health -= dmg
+	}
+
 	getAttack() {
 		return this.attack
 	}
 
+	performAttack(piece) {
+		let dmg = Math.floor(Math.random() * this.getAttack())
+		piece.removeHealth(dmg)
+		console.log(`${this.name} did ${dmg} to ${piece.name}`)
+	}
 	getCurrentSpace() {
 		return this.currentSpace
 	}
@@ -100,6 +108,7 @@ class IdleState extends State {
 	enterState(scene, piece) {
 		//Play Initial State Animation
 		//In this case its IdleAnimation
+		console.log(`${piece.name} has gone idle`)
 		piece.idle()
 		
 	}
@@ -137,17 +146,36 @@ class MoveState extends State {
 }
 
 class AttackState extends State {
-	enterState(scene, piece) {
-		//Attack selected piece 
-		//Once attack is finished animation and all
-		//Go back to idle
-		//this.stateMachine.transition('idle')
+	enterState(scene, thisPiece, piece) {
+		console.log(`-===================================-`)
+		if (thisPiece.getHealth() <= 0) {
+			this.stateMachine.transition('dead')
+		}
+		else { 	
+			console.log(`${thisPiece.name} is going to attack ${piece.name}`)
+			thisPiece.performAttack(piece)
+			console.log(`${thisPiece.name}'s Health: ${thisPiece.getHealth()}`)
+			console.log(`${piece.name}'s Health: ${piece.getHealth()}`)			
+			this.stateMachine.transition('idle')
+			scene.time.addEvent({
+				delay: 3000,
+				callback: ()=>{
+					piece.pieceStateMachine.transition('attack', thisPiece)
+				},
+			})
+			
+		}
+		console.log(`-===================================-`)
+	}
+	executeState(scene, thisPiece) {
+		
 	}
 }
 
 class DeadState extends State {
 	enterState(scene, piece) {
-		console.log("died")
+		console.log(`${piece.name} has died`)
+		piece.destroy()
 		//Piece has died
 		// We cannot leave this state 
 	}
