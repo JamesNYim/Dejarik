@@ -31,7 +31,6 @@ class Piece extends Phaser.Physics.Arcade.Sprite {
 		this.scene.physics.world.enable(this)
 		this.group.add(this)
 	}
-
 	move(xCoord, yCoord) {
 		this.x = xCoord
 		this.y = yCoord
@@ -72,36 +71,15 @@ class Piece extends Phaser.Physics.Arcade.Sprite {
 		}
  	}
 
-	isValidMove(space) {
-		if (!this.followsMovementRules(space)) {
+	isLegalMove(space) {
+		if (space.boardCoords[0] === 0 && space.boardCoords[1] === 0) {
+			return false
+		}
+		if (space.boardCoords[0] === 1 && space.boardCoords[1] === 0) {
 			return false
 		}
 		return true
 	}
-
-	followsMovementRules(space) {
-		let up = [-4, -1]
-		let down = [4, 1]
-		let right = [1, 0]
-		let left = [-1, 0]
-		let upRight = [-4, 1]
-		let upLeft = [-5, 1]
-		let downRight = [5, 1]
-		let downLeft = [3, 1]
-
-		let moveSet = [up, down, right, left, upRight, upLeft, downRight, downLeft]
-		let currentSpace = this.getCurrentSpace()
-		for (let i = 0; i < moveSet.length; ++i){
-			if (currentSpace[0] + moveSet[i][0] == space.boardCoords[0] && 
-				currentSpace[1] + moveSet[i][1] == space.boardCoords[1])
-				{
-					return true
-				} 
-		}
-		return false
-		
-	}
-
 }
 
 class IdleState extends State {
@@ -114,35 +92,34 @@ class IdleState extends State {
 	}
 
 	executeState(scene, piece) {
-		//Transition to move if it is the players turn and
-		//if the selected board space is a valid spot
-		//this.stateMachine.transition('move')
-		piece.on('drag', (pointer, dragX, dragY) => this.stateMachine.transition('move', dragX, dragY))
-
-		//Transition to attack if it is the players turn
-		//and there is an enemy in a valid spot
-		//this.stateMachine.transition('attack')
-
-		//Transition to dead if no health left
-		//this.stateMachine.transition('dead')
+		piece.on('dragstart', (pointer, dragX, dragY) => this.stateMachine.transition('move'))
 	}
 }
 
 class MoveState extends State {
 	enterState(scene, piece, x, y) {
-		piece.move(x, y)
+		piece.originalX = piece.x
+		piece.originalY = piece.y
+		piece.on('drag', (pointer, dragX, dragY) => {
+            piece.move(dragX, dragY);
+        });
+
+        piece.on('pointerup', () => {
+            this.stateMachine.transition('idle');
+        });
+		
 	}
+	/*
 	executeState(scene, piece, x, y) {
-		//Move piece to selected board spot
-		//Animate movement to the spot
-		//Once it reaches spot go back to idle
-		//this.stateMachine.transition('idle')
+		console.log(`[${x} : ${y}]`)
+		piece.move(x, y)
 		piece.on('pointerup', () => this.stateMachine.transition('idle'))
 	}
 
 	leaveState(scene, piece) {
 		console.log(`${piece.name} stopped being dragged`)
 	}
+	*/
 }
 
 class AttackState extends State {
