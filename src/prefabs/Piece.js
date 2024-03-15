@@ -153,21 +153,41 @@ class MoveState extends State {
 }
 
 class AttackState extends State {
-	enterState(scene, thisPiece, piece) {
+	enterState(scene, attacker, defender) {
 		console.log(`-===================================-`)
-		if (thisPiece.getHealth() <= 0) {
+		if (attacker.getHealth() <= 0) {
 			this.stateMachine.transition('dead')
 		}
 		else { 	
-			console.log(`${thisPiece.name} is going to attack ${piece.name}`)
-			thisPiece.performAttack(piece)
-			console.log(`${thisPiece.name}'s Health: ${thisPiece.getHealth()}`)
-			console.log(`${piece.name}'s Health: ${piece.getHealth()}`)			
-			this.stateMachine.transition('idle')
+			console.log(`${attacker.name} is going to attack ${defender.name}`)
+			scene.tweens.add({
+				targets: attacker,
+				x: attacker.currentSpace.x + attacker.currentSpace.width / 2 - attacker.width / 2,
+				y: attacker.currentSpace.y + attacker.currentSpace.height / 2 - attacker.height / 2,
+				ease: 'Power1',
+				duration: 500,
+				onComplete: () => {
+					attacker.performAttack(defender);
+					scene.tweens.add({
+						targets: attacker,
+						x: attacker.originalX,
+						y: attacker.originalY,
+						ease: 'Power1',
+						duration: 500,
+						onComplete: () => {
+							console.log(`${attacker.name} returned to its original position`);
+							this.stateMachine.transition('idle');
+						}
+					});
+				}
+			})
+			
+			console.log(`${attacker.name}'s Health: ${attacker.getHealth()}`)
+			console.log(`${defender.name}'s Health: ${defender.getHealth()}`)			
 			scene.time.addEvent({
 				delay: 3000,
 				callback: ()=>{
-					piece.pieceStateMachine.transition('attack', thisPiece)
+					defender.pieceStateMachine.transition('attack', attacker)
 				},
 			})
 			

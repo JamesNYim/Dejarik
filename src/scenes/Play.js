@@ -209,23 +209,26 @@ class Play extends Phaser.Scene {
 					isLegal = true
 					if (piece.getCurrentSpace() !== space) {
 						piece.setCurrentSpace(space)
+						console.log(space.boardCoords)
 					}
 					if (space.isOccupiedByMultiplePieces()) {
 						// Handle the case where multiple pieces are in the same space
 						//console.log(`Conflict in space ${space.boardCoords}:`, space.getPieces().map(p => p.name));
-						space.getPieces().map(p => {
-							if (p.name !== piece.name) {
-								piece.pieceStateMachine.transition('attack', p)
-							}
+						space.resolveSpaceConflict();
+						this.time.addEvent({
+							delay: 1000,
+							callback: ()=>{
+								let targetPiece = space.getPieces().find(p => p !== piece);
+								piece.pieceStateMachine.transition('attack', targetPiece)
+							},
 						})
-							
+						//piece.pieceStateMachine.transition('attack', p)
+						
 					}
 				}
 				if (!isLegal) {
 					console.log(`Illegal Move`)
 					console.log(`x: ${piece.originalX}, y: ${piece.originalY}`)
-					//piece.x = piece.originalX
-					//piece.y = piece.originalY
 					this.tweens.add({
 						targets: piece,
 						x: piece.originalX,
@@ -239,7 +242,6 @@ class Play extends Phaser.Scene {
 				}
 			}
 		});
-		
 	}
 
 	spawnBoard() {
