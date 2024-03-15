@@ -224,8 +224,18 @@ class Play extends Phaser.Scene {
 				if (!isLegal) {
 					console.log(`Illegal Move`)
 					console.log(`x: ${piece.originalX}, y: ${piece.originalY}`)
-					piece.x = piece.originalX
-					piece.y = piece.originalY
+					//piece.x = piece.originalX
+					//piece.y = piece.originalY
+					this.tweens.add({
+						targets: piece,
+						x: piece.originalX,
+						y: piece.originalY,
+						ease: 'Power1',
+						duration: 1000,
+						onComplete: () => {
+							console.log(`${piece.name} returned to its original pos`)
+						}
+					})
 				}
 			}
 		});
