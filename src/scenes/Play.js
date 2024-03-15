@@ -82,6 +82,12 @@ class Play extends Phaser.Scene {
 	}
 
 	createPieces() {
+		const pieceStartingPos = {
+			houjix: [1, 1],
+			klorslug: [2, 3],
+			savrip: [3, 1]
+		}
+
 		this.houjix = new Houjix(
 			this,
 			164,
@@ -170,9 +176,26 @@ class Play extends Phaser.Scene {
 			this.klorslug.pieceStateMachine.transition('idle');
 			this.checkOverlap(this.klorslug)
 		})
-		this.pieceGroup.getChildren().forEach(piece => {
-			this.checkOverlap(piece)
-		})
+
+		this.assignStartingSpace(pieceStartingPos);
+	}
+
+	assignStartingSpace(positions) {
+		for (const pieceName in positions) {
+			const [x, y] = positions[pieceName];
+			const startingSpace = this.findSpaceByCoords(x, y);
+
+			if (startingSpace) {
+				const piece = this[pieceName];
+				piece.setCurrentSpace(startingSpace);
+			}
+		}
+	}
+
+	findSpaceByCoords(x, y) {
+		return this.spaceGroup.getChildren().find(space => 
+			space.boardCoords[0] === x && space.boardCoords[1] === y
+		)
 	}
 
 	checkOverlap(piece) {

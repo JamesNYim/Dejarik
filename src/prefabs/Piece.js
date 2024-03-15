@@ -72,13 +72,43 @@ class Piece extends Phaser.Physics.Arcade.Sprite {
  	}
 
 	isLegalMove(space) {
-		if (space.boardCoords[0] === 0 && space.boardCoords[1] === 0) {
-			return false
-		}
-		if (space.boardCoords[0] === 1 && space.boardCoords[1] === 0) {
-			return false
-		}
-		return true
+		const [currentX, currentY] = this.getCurrentSpace().boardCoords;
+		const [targetX, targetY] = space.boardCoords;
+
+		const minX = 0; 
+		const maxX = 4; 
+		const minY = 0; 
+		const maxY = 4; 
+		const isWithinBoundaries = 
+        targetX >= minX && targetX <= maxX &&
+        targetY >= minY && targetY <= maxY;
+
+		
+		//Movement in immediate squares. For (defensive and offensive)
+		/*return (
+			isWithinBoundaries &&
+			(Math.abs(currentX - targetX) === 1 && currentY === targetY) || // Horizontal adjacent
+			(Math.abs(currentY - targetY) === 1 && currentX === targetX) || // Vertical adjacent
+			(Math.abs(currentX - targetX) === 1 && Math.abs(currentY - targetY) === 1) // Diagonal adjacent
+		); */
+		
+		//Movement in an L for (scouts)
+		/*return (
+			isWithinBoundaries &&
+			(Math.abs(currentX - targetX) === 2 && Math.abs(currentY - targetY) === 1) ||
+			(Math.abs(currentX - targetX) === 1 && Math.abs(currentY - targetY) === 2)
+		); */
+
+		// Rooklike movement for (Power)
+		const isHorizontal = currentY === targetY;
+		const isVertical = currentX === targetX;
+
+		const distance = Math.max(Math.abs(currentX - targetX), Math.abs(currentY - targetY));
+		const isValidDistance = distance > 0 && distance <= 2;
+
+		return (
+			isWithinBoundaries && (isHorizontal || isVertical) && isValidDistance
+		)
 	}
 }
 
