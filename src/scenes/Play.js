@@ -83,8 +83,8 @@ class Play extends MasterScene {
 		//Debugging:
 		keyJUMP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
-		let music = this.sound.add('backgroundMusic', { loop: true });
-        music.play();
+		this.music = this.sound.add('backgroundMusic', { loop: true });
+        this.music.play();
 
 		this.board = this.add.image(
 			0,
@@ -95,6 +95,8 @@ class Play extends MasterScene {
 		this.spawnBoard()
 
 		this.pieceGroup = this.physics.add.group()
+		this.teamOne = this.add.group()
+		this.teamTwo = this.add.group()
 		this.createPieces()
 
 		this.backButton = this.add.image(
@@ -105,7 +107,7 @@ class Play extends MasterScene {
 		this.backButton.setInteractive()
 		this.backButton.on('pointerdown', () => {
 			this.sceneChange('menuScene', 'buttonSFX');
-			music.stop()
+			this.music.stop()
 		});
 	}
 
@@ -124,6 +126,26 @@ class Play extends MasterScene {
 		this.monnok.pieceStateMachine.step()
 		this.grimtash.pieceStateMachine.step()
 		this.ngok.pieceStateMachine.step()
+
+		if (this.teamOne.countActive() <= 0) {
+			this.time.addEvent({
+				delay: 1500,
+				callback: ()=>{
+					this.sceneChange('menuScene', 'buttonSFX')
+					this.music.stop()
+				},
+			})
+		}
+
+		if (this.teamTwo.countActive() <= 0) {
+			this.time.addEvent({
+				delay: 1500,
+				callback: ()=>{
+					this.sceneChange('menuScene', 'buttonSFX')
+					this.music.stop()
+				},
+			})
+		}
 	}
 
 	createPieces() {
@@ -147,10 +169,12 @@ class Play extends MasterScene {
 			0,
 			'Houjix',
 			this.pieceGroup,
+			this.teamOne,
 			'houjixIdleSheet')
 			.setOrigin(0,0)
 		this.houjix.setSize(32, 32, false)
 		this.houjix.setInteractive({draggable: true})
+		
 		this.houjix.on('pointerup', (pointer) => {
 			this.houjix.pieceStateMachine.transition('idle');
 			this.checkOverlap(this.houjix)
@@ -165,6 +189,7 @@ class Play extends MasterScene {
 			0,
 			'Ghhk',
 			this.pieceGroup,
+			this.teamTwo,
 			'ghhkIdleSheet')
 			.setOrigin(0,0)
 		this.ghhk.setSize(32, 32, false)
@@ -182,6 +207,7 @@ class Play extends MasterScene {
 			0,
 			'Strider',
 			this.pieceGroup,
+			this.teamTwo,
 			'striderIdleSheet')
 			.setOrigin(0,0)
 		this.strider.setSize(32, 32, false)
@@ -199,6 +225,7 @@ class Play extends MasterScene {
 			0,
 			'Savrip',
 			this.pieceGroup,
+			this.teamOne,
 			'savripIdleSheet'
 			)
 			.setOrigin(0,0)
@@ -218,6 +245,7 @@ class Play extends MasterScene {
 			0,
 			'Klorslug',
 			this.pieceGroup,
+			this.teamOne,
 			'klorslugIdleSheet')
 			.setOrigin(0,0)
 		this.klorslug.setSize(32, 32, false)
@@ -235,6 +263,7 @@ class Play extends MasterScene {
 			0,
 			'ngok',
 			this.pieceGroup,
+			this.teamOne,
 			'ngokIdleSheet')
 			.setOrigin(0,0)
 		this.ngok.setSize(32, 32, false)
@@ -252,6 +281,7 @@ class Play extends MasterScene {
 			0,
 			'monnok',
 			this.pieceGroup,
+			this.teamTwo,
 			'monnokIdleSheet')
 			.setOrigin(0,0)
 		this.monnok.setSize(32, 32, false)
@@ -269,6 +299,7 @@ class Play extends MasterScene {
 			0,
 			'grimtash',
 			this.pieceGroup,
+			this.teamTwo,
 			'grimtashIdleSheet')
 			.setOrigin(0,0)
 		this.grimtash.setSize(32, 32, false)
@@ -277,6 +308,7 @@ class Play extends MasterScene {
 			this.grimtash.pieceStateMachine.transition('idle');
 			this.checkOverlap(this.grimtash)
 		})
+
 		this.assignStartingSpace(pieceStartingPos);
 	}
 

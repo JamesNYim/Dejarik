@@ -1,6 +1,7 @@
 class Piece extends Phaser.Physics.Arcade.Sprite {
 	constructor(scene, x, y, texture, frame, name,
 		pieceGroup,
+		team,
 		idleAnimationSheet,
 		moveAnimation,
 		attackAnimation,
@@ -12,6 +13,7 @@ class Piece extends Phaser.Physics.Arcade.Sprite {
 		scene.add.existing(this)
 		this.name = name
 		this.group = pieceGroup
+		this.team = team
 	
 		this.health = 10
 		this.attack = 10
@@ -30,6 +32,7 @@ class Piece extends Phaser.Physics.Arcade.Sprite {
 
 		this.scene.physics.world.enable(this)
 		this.group.add(this)
+		this.team.add(this)
 	}
 	move(xCoord, yCoord) {
 		this.x = xCoord
@@ -231,6 +234,7 @@ class DeadState extends State {
 		)
 		emitter.explode(20)
 		piece.destroy()
+		console.log(`Piece Team: ${piece.team.getChildren()}`)
 		piece.currentSpace.removePiece(piece)
 		//Piece has died
 		// We cannot leave this state 
