@@ -4,6 +4,7 @@ class Play extends Phaser.Scene {
 	}
 
 	preload() {
+		this.load.audio('backgroundMusic', './assets/BoardAssets/star wars ~ cantina band ~ lofi.wav')
 		this.load.image('boardSprite', './assets/BoardAssets/DejarikBoard.png')
 		this.load.image('white8x8', './assets/BoardAssets/White_8x8.png')
 		
@@ -47,12 +48,42 @@ class Play extends Phaser.Scene {
 			startFrame: 0,
 			endFrame: 1
 		})
+
+		this.load.image('ngokSprite', './assets/pieceAssets/NgokAssets/Ngok-1.png')
+		this.load.spritesheet('ngokIdleSheet', './assets/pieceAssets/NgokAssets/spritesheet.png',
+		{
+			frameWidth: 32,
+			frameHeight: 32,
+			startFrame: 0,
+			endFrame: 1
+		})
+
+		this.load.image('monnokSprite', './assets/pieceAssets/MonnokAssets/Monnok-1 .png')
+		this.load.spritesheet('monnokIdleSheet', './assets/pieceAssets/MonnokAssets/spritesheet.png',
+		{
+			frameWidth: 32,
+			frameHeight: 32,
+			startFrame: 0,
+			endFrame: 1
+		})
+
+		this.load.image('grimtashSprite', './assets/pieceAssets/GrimtashAssets/Grimtash-1.png')
+		this.load.spritesheet('grimtashIdleSheet', './assets/pieceAssets/GrimtashAssets/spritesheet.png',
+		{
+			frameWidth: 32,
+			frameHeight: 32,
+			startFrame: 0,
+			endFrame: 1
+		})
 	
 	}
 
 	create() {
 		//Debugging:
 		keyJUMP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+
+		let music = this.sound.add('backgroundMusic', { loop: true });
+        music.play();
 
 		this.board = this.add.image(
 			0,
@@ -79,19 +110,28 @@ class Play extends Phaser.Scene {
 		this.klorslug.pieceStateMachine.step()
 		this.savrip.pieceStateMachine.step()
 		this.strider.pieceStateMachine.step()
+		this.monnok.pieceStateMachine.step()
+		this.grimtash.pieceStateMachine.step()
+		this.ngok.pieceStateMachine.step()
 	}
 
 	createPieces() {
 		const pieceStartingPos = {
-			houjix: [1, 1],
-			klorslug: [2, 3],
-			savrip: [3, 1]
+			houjix: [2, 0], // scout
+			klorslug: [1, 1], //offensive
+			savrip: [3, 1], //Power
+			ngok: [2, 1], // Defense
+
+			ghhk: [2, 4], //scout
+			monnok: [1, 3], //Power
+			grimtash: [3, 3], // offensive
+			strider: [2, 3] // defense
 		}
 
 		this.houjix = new Houjix(
 			this,
-			164,
-			141,
+			243,
+			31,
 			'houjixSprite',
 			0,
 			'Houjix',
@@ -108,8 +148,8 @@ class Play extends Phaser.Scene {
 
 		this.ghhk = new Ghhk(
 			this,
-			243,
-			135,
+			253,
+			407,
 			'ghhkSprite',
 			0,
 			'Ghhk',
@@ -125,8 +165,8 @@ class Play extends Phaser.Scene {
 	
 		this.strider = new Strider(
 			this,
-			326,
-			316,
+			249,
+			306,
 			'striderSprite',
 			0,
 			'Strider',
@@ -161,8 +201,8 @@ class Play extends Phaser.Scene {
 
 		this.klorslug = new Klorslug(
 			this,
-			238,
-			309,
+			158,
+			130,
 			'klorslugSprite',
 			0,
 			'Klorslug',
@@ -172,11 +212,60 @@ class Play extends Phaser.Scene {
 		this.klorslug.setSize(32, 32, false)
 		this.klorslug.setInteractive({draggable: true})
 		this.klorslug.on('pointerup', (pointer) => {
-			console.log(`klorslug released`)
 			this.klorslug.pieceStateMachine.transition('idle');
 			this.checkOverlap(this.klorslug)
 		})
 
+		this.ngok = new Ngok(
+			this,
+			249,
+			130,
+			'ngokSprite',
+			0,
+			'ngok',
+			this.pieceGroup,
+			'ngokIdleSheet')
+			.setOrigin(0,0)
+		this.ngok.setSize(32, 32, false)
+		this.ngok.setInteractive({draggable: true})
+		this.ngok.on('pointerup', (pointer) => {
+			this.ngok.pieceStateMachine.transition('idle');
+			this.checkOverlap(this.ngok)
+		})
+
+		this.monnok = new Monnok(
+			this,
+			152,
+			308,
+			'monnokSprite',
+			0,
+			'monnok',
+			this.pieceGroup,
+			'monnokIdleSheet')
+			.setOrigin(0,0)
+		this.monnok.setSize(32, 32, false)
+		this.monnok.setInteractive({draggable: true})
+		this.monnok.on('pointerup', (pointer) => {
+			this.monnok.pieceStateMachine.transition('idle');
+			this.checkOverlap(this.monnok)
+		})
+
+		this.grimtash = new Grimtash(
+			this,
+			330,
+			306,
+			'grimtashSprite',
+			0,
+			'grimtash',
+			this.pieceGroup,
+			'grimtashIdleSheet')
+			.setOrigin(0,0)
+		this.grimtash.setSize(32, 32, false)
+		this.grimtash.setInteractive({draggable: true})
+		this.grimtash.on('pointerup', (pointer) => {
+			this.grimtash.pieceStateMachine.transition('idle');
+			this.checkOverlap(this.grimtash)
+		})
 		this.assignStartingSpace(pieceStartingPos);
 	}
 

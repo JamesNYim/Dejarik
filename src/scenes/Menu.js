@@ -4,9 +4,9 @@ class Menu extends Phaser.Scene {
 	}
 
 	preload() {
-		//this.load.image('menuBackground', './assets/MenuAssets/menuBackground.png')
+		this.load.image('menuBackground', './assets/MenuAssets/menuBackground.png')
 		this.load.image('PlayButton', './assets/MenuAssets/Play_Button.png')
-		this.load.audio('buttonSFX', './assets/MenuAssets/buttonClickSound.wav')
+		this.load.audio('buttonSFX', './assets/MenuAssets/mixkit-sci-fi-positive-notification-266.wav')
 	}	
 
 	create() {

@@ -100,6 +100,7 @@ class Piece extends Phaser.Physics.Arcade.Sprite {
 		); */
 
 		// Rooklike movement for (Power)
+		/*
 		const isHorizontal = currentY === targetY;
 		const isVertical = currentX === targetX;
 
@@ -109,6 +110,8 @@ class Piece extends Phaser.Physics.Arcade.Sprite {
 		return (
 			isWithinBoundaries && (isHorizontal || isVertical) && isValidDistance
 		)
+		*/
+		return true
 	}
 }
 
