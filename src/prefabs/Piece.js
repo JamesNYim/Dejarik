@@ -171,6 +171,19 @@ class AttackState extends State {
 				duration: 500,
 				onComplete: () => {
 					attacker.performAttack(defender);
+					let emitter = scene.add.particles(
+						attacker.currentSpace.x + attacker.currentSpace.width / 2,
+						attacker.currentSpace.y + attacker.currentSpace.height / 2,
+						'bloodSprite', {
+							speed: { min: 150, max: 250 },
+							gravityY: 150,
+							scale: {start: 1, end: 0},
+							blendMode: 'ADD',
+							emitting: false
+						}
+					)
+					emitter.explode(20)
+					
 					scene.tweens.add({
 						targets: attacker,
 						x: attacker.originalX,
@@ -205,6 +218,18 @@ class AttackState extends State {
 class DeadState extends State {
 	enterState(scene, piece) {
 		console.log(`${piece.name} has died`)
+		let emitter = scene.add.particles(
+			piece.currentSpace.x + piece.currentSpace.width / 2,
+			piece.currentSpace.y + piece.currentSpace.height / 2,
+			'bloodSprite', {
+				speed: { min: 150, max: 250 },
+				gravityY: 150,
+				scale: {start: 1, end: 0},
+				blendMode: 'ADD',
+				emitting: false
+			}
+		)
+		emitter.explode(20)
 		piece.destroy()
 		piece.currentSpace.removePiece(piece)
 		//Piece has died

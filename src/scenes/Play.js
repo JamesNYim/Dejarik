@@ -1,4 +1,4 @@
-class Play extends Phaser.Scene {
+class Play extends MasterScene {
 	constructor() {
 		super("playScene")
 	}
@@ -7,7 +7,8 @@ class Play extends Phaser.Scene {
 		this.load.audio('backgroundMusic', './assets/BoardAssets/star wars ~ cantina band ~ lofi.wav')
 		this.load.image('boardSprite', './assets/BoardAssets/DejarikBoard.png')
 		this.load.image('white8x8', './assets/BoardAssets/White_8x8.png')
-		
+		this.load.image('bloodSprite', './assets/pieceAssets/BloodSprite.png')
+
 		this.load.image('houjixSprite', './assets/pieceAssets/houjixAssets/houjix.png')
 		this.load.spritesheet('houjixIdleSheet', './assets/pieceAssets/houjixAssets/houjixStatic.png',
 		{
@@ -96,6 +97,16 @@ class Play extends Phaser.Scene {
 		this.pieceGroup = this.physics.add.group()
 		this.createPieces()
 
+		this.backButton = this.add.image(
+			game.config.width - 64,
+			game.config.height - 24,
+			'backButton'
+		)
+		this.backButton.setInteractive()
+		this.backButton.on('pointerdown', () => {
+			this.sceneChange('menuScene', 'buttonSFX');
+			music.stop()
+		});
 	}
 
 	update() {
