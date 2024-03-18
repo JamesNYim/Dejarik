@@ -206,6 +206,7 @@ class DeadState extends State {
 	enterState(scene, piece) {
 		console.log(`${piece.name} has died`)
 		piece.destroy()
+		piece.currentSpace.removePiece(piece)
 		//Piece has died
 		// We cannot leave this state 
 	}

@@ -10,6 +10,9 @@ class Grimtash extends Piece {
 			moveAnimation,
 			attackAnimation,
 			deadAnimation)
+
+		this.health = 10
+		this.attack = 100
 		this.animsKey = 'grimtashIdle'
 		this.idleAnimation = this.scene.anims.create({
 			key: this.animsKey,
@@ -22,5 +25,27 @@ class Grimtash extends Piece {
 			)
 		})
 
+	}
+
+	isLegalMove(space) {
+		const [currentX, currentY] = this.getCurrentSpace().boardCoords;
+		const [targetX, targetY] = space.boardCoords;
+
+		const minX = 0; 
+		const maxX = 4; 
+		const minY = 0; 
+		const maxY = 4; 
+		const isWithinBoundaries = 
+        targetX >= minX && targetX <= maxX &&
+        targetY >= minY && targetY <= maxY;
+
+		
+		//Movement in immediate squares. For (defensive and offensive)
+		return (
+			isWithinBoundaries &&
+			(Math.abs(currentX - targetX) === 1 && currentY === targetY) || // Horizontal adjacent
+			(Math.abs(currentY - targetY) === 1 && currentX === targetX) || // Vertical adjacent
+			(Math.abs(currentX - targetX) === 1 && Math.abs(currentY - targetY) === 1) // Diagonal adjacent
+		); 
 	}
 }
