@@ -1,4 +1,4 @@
-class Menu extends Phaser.Scene {
+class Menu extends MasterScene {
 	constructor() {
 		super("menuScene")
 	}
@@ -6,7 +6,9 @@ class Menu extends Phaser.Scene {
 	preload() {
 		this.load.image('menuBackground', './assets/MenuAssets/menuBackground.png')
 		this.load.image('PlayButton', './assets/MenuAssets/Play_Button.png')
-		this.load.audio('buttonSFX', './assets/MenuAssets/mixkit-sci-fi-positive-notification-266.wav')
+		this.load.image('CreditsButton', './assets/MenuAssets/Credits_Button.png')
+		this.load.image('HowToPlayButton', './assets/MenuAssets/How_to_play_button.png')
+		
 	}	
 
 	create() {
@@ -24,12 +26,23 @@ class Menu extends Phaser.Scene {
 		this.playButton.setInteractive()
 		this.playButton.on('pointerdown', () =>
 			this.sceneChange('playScene', 'buttonSFX'))
-	}
 
-	sceneChange(scene, sfx) {
-		this.sound.play(sfx)
-		this.time.delayedCall(100, () => {
-			this.scene.start(scene)
-		}, [], this)
+		this.creditsButton = this.add.image(
+			game.config.width / 2,
+			game.config.height / 2 + 50,
+			'CreditsButton'
+		)
+		this.creditsButton.setInteractive()
+		this.creditsButton.on('pointerdown', () =>
+			this.sceneChange('playScene', 'buttonSFX'))
+
+		this.howToPlayButton = this.add.image(
+			game.config.width / 2,
+			game.config.height / 2 + 100,
+			'HowToPlayButton'
+		)
+		this.howToPlayButton.setInteractive()
+		this.howToPlayButton.on('pointerdown', () =>
+			this.sceneChange('howToPlayScene', 'buttonSFX'))
 	}
 }
