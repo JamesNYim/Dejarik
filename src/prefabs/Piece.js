@@ -74,6 +74,10 @@ class Piece extends Phaser.Physics.Arcade.Sprite {
 		}
  	}
 
+	getTeam() {
+		return this.team
+	}
+	
 	isLegalMove(space) {
 		const [currentX, currentY] = this.getCurrentSpace().boardCoords;
 		const [targetX, targetY] = space.boardCoords;

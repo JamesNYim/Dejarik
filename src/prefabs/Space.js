@@ -44,27 +44,44 @@ class Space extends Phaser.Physics.Arcade.Sprite {
 			let newY1 = this.y
 			let newY2 = this.y + this.height - 32;
 
+			let topLeftPiece = null
+			let botRightPiece = null
+			if (pieces[0].getTeam() === this.scene.teamOne) {
+				topLeftPiece = pieces[0]
+			}
+			else {
+				botRightPiece = pieces[0]
+			}
+
+			if (pieces[1].getTeam() === this.scene.teamTwo) {
+				
+				botRightPiece = pieces[1]
+			}
+			else {
+				topLeftPiece = pieces[1]
+			}
+
 			this.scene.tweens.add({
-				targets: pieces[0],
+				targets: topLeftPiece,
 				x: newX1,
 				y: newY1,
 				ease: 'Power1',
 				duration: 1000,
 				onComplete: () => {
-					pieces[0].originalX = newX1;
-					pieces[0].originalY = newY1;
+					topLeftPiece.originalX = newX1;
+					topLeftPiece.originalY = newY1;
 				}
 			});
 	
 			this.scene.tweens.add({
-				targets: pieces[1],
+				targets: botRightPiece,
 				x: newX2,
 				y: newY2,
 				ease: 'Power1',
 				duration: 1000,
 				onComplete: () => {
-					pieces[1].originalX = newX2;
-					pieces[1].originalY = newY2;
+					botRightPiece.originalX = newX2;
+					botRightPiece.originalY = newY2;
 				}
 			});
 		}
