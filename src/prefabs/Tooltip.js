@@ -68,11 +68,10 @@ class Tooltip {
 		this.background.setVisible(false)
 	}
 
-	updateTooltipPos(piece) {
-		let padding = 10;
+	updateTooltipPos() {
 		this.nameText.setPosition(this.piece.x, this.piece.y - 50)
 		this.healthText.setPosition(this.piece.x, this.piece.y - 50)
-		this.attackTextText.setPosition(this.piece.x, this.piece.y - 50)
+		this.attackText.setPosition(this.piece.x, this.piece.y - 50)
 
 		let textBounds = this.healthText.getBounds();
 		this.background

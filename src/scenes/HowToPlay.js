@@ -7,6 +7,7 @@ class HowToPlay extends MasterScene {
 		this.load.image('HowToPlayButton', './assets/MenuAssets/How_to_play_button.png')
 		this.load.image('HowToPlayBackground', './assets/MenuAssets/HowToPlayBackground.png')
 		this.load.image('combatButton', './assets/MenuAssets/CombatButton.png')
+		this.load.image('movementButton', ' ./assets/MenuAssets/MovementButton.png')
 	}
 	create() {
 
@@ -17,13 +18,23 @@ class HowToPlay extends MasterScene {
 		).setOrigin(0, 0)
 		
 		this.combatButton = this.add.image(
-			game.config.width / 4,
-			game.config.height * .85,
+			game.config.width / 2,
+			game.config.height * .9,
 			'combatButton'
 		)
 		.setInteractive()
 		.on('pointerdown', () => {
 			this.sceneChange('combatScene', 'buttonSFX');
+		});
+
+		this.movementButton = this.add.image(
+			game.config.width / 2,
+			game.config.height * .8,
+			'movementButton'
+		)
+		.setInteractive()
+		.on('pointerdown', () => {
+			this.sceneChange('movementScene', 'buttonSFX');
 		});
 
 		this.backButton = this.add.image(
@@ -33,7 +44,7 @@ class HowToPlay extends MasterScene {
 		)
 		this.backButton.setInteractive()
 		this.backButton.on('pointerdown', () => {
-			this.sceneChange('combatScene', 'buttonSFX');
+			this.sceneChange('menuScene', 'buttonSFX');
 		});
 	}
 	

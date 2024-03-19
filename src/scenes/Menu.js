@@ -8,6 +8,7 @@ class Menu extends MasterScene {
 		this.load.image('PlayButton', './assets/MenuAssets/Play_Button.png')
 		this.load.image('CreditsButton', './assets/MenuAssets/Credits_Button.png')
 		this.load.image('HowToPlayButton', './assets/MenuAssets/How_to_play_button.png')
+		this.load.image('DejarikTitle', './assets/MenuAssets/DejarikTitle.png')
 		
 	}	
 
@@ -18,6 +19,11 @@ class Menu extends MasterScene {
 			'menuBackground')
 		.setOrigin(0, 0)
 
+		this.title = this.add.image(
+			game.config.width / 2,
+			game.config.height - 80,
+			'DejarikTitle'
+		)
 		this.playButton = this.add.image(
 			game.config.width / 2,
 			game.config.width / 2,
@@ -34,7 +40,7 @@ class Menu extends MasterScene {
 		)
 		this.creditsButton.setInteractive()
 		this.creditsButton.on('pointerdown', () =>
-			this.sceneChange('playScene', 'buttonSFX'))
+			this.sceneChange('creditsScene', 'buttonSFX'))
 
 		this.howToPlayButton = this.add.image(
 			game.config.width / 2,

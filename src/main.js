@@ -11,10 +11,10 @@ let config = {
 	physics: {
 		default: 'arcade',
 		arcade: {
-			debug: true
+			debug: false
 		}
 	},
-	scene: [MasterScene, Menu, HowToPlay, CombatMenu, Play]
+	scene: [MasterScene, Menu, Credits, HowToPlay, CombatMenu, MovementMenu, Play]
 }
 
 let game = new Phaser.Game(config)

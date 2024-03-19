@@ -4,6 +4,9 @@ class Play extends MasterScene {
 	}
 
 	preload() {
+		this.load.image('team1Win', './assets/MenuAssets/Team1Win.png')
+		this.load.image('team2Win', './assets/MenuAssets/Team2Win.png')
+
 		this.load.audio('backgroundMusic', './assets/BoardAssets/star wars ~ cantina band ~ lofi.wav')
 		this.load.image('boardSprite', './assets/BoardAssets/DejarikBoard.png')
 		this.load.image('white8x8', './assets/BoardAssets/White_8x8.png')
@@ -128,8 +131,13 @@ class Play extends MasterScene {
 		this.ngok.pieceStateMachine.step()
 
 		if (this.teamOne.countActive() <= 0) {
+			this.add.image(
+				game.config.width / 2,
+				game.config.height / 2,
+				'team1Win'
+			)
 			this.time.addEvent({
-				delay: 1500,
+				delay: 2500,
 				callback: ()=>{
 					this.sceneChange('menuScene', 'buttonSFX')
 					this.music.stop()
@@ -138,8 +146,13 @@ class Play extends MasterScene {
 		}
 
 		if (this.teamTwo.countActive() <= 0) {
+			this.add.image(
+				game.config.width / 2,
+				game.config.height / 2,
+				'team2Win'
+			)
 			this.time.addEvent({
-				delay: 1500,
+				delay: 2500,
 				callback: ()=>{
 					this.sceneChange('menuScene', 'buttonSFX')
 					this.music.stop()
