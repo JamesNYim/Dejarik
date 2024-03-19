@@ -33,6 +33,10 @@ class Piece extends Phaser.Physics.Arcade.Sprite {
 		this.scene.physics.world.enable(this)
 		this.group.add(this)
 		this.team.add(this)
+
+		this.tooltip = new Tooltip(this.scene, this)
+		this.on('pointerover', () => this.tooltip.showTooltip(this))
+        this.on('pointerout', () => this.tooltip.hideTooltip());
 	}
 	move(xCoord, yCoord) {
 		this.x = xCoord
@@ -77,7 +81,7 @@ class Piece extends Phaser.Physics.Arcade.Sprite {
 	getTeam() {
 		return this.team
 	}
-	
+
 	isLegalMove(space) {
 		const [currentX, currentY] = this.getCurrentSpace().boardCoords;
 		const [targetX, targetY] = space.boardCoords;
@@ -146,6 +150,9 @@ class MoveState extends State {
 
         piece.on('pointerup', () => {
             this.stateMachine.transition('idle');
+			if (piece.tooltip) {
+				piece.tooltip.updateTooltipPos(piece)
+			}
         });
 		
 	}
