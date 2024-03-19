@@ -63,6 +63,7 @@ class Piece extends Phaser.Physics.Arcade.Sprite {
 		let dmg = Math.floor(Math.random() * this.getAttack())
 		piece.removeHealth(dmg)
 		console.log(`${this.name} did ${dmg} to ${piece.name}`)
+		return dmg
 	}
 	getCurrentSpace() {
 		return this.currentSpace
@@ -184,7 +185,7 @@ class AttackState extends State {
 				ease: 'Power1',
 				duration: 500,
 				onComplete: () => {
-					attacker.performAttack(defender);
+					let dmg = attacker.performAttack(defender);
 					let emitter = scene.add.particles(
 						attacker.currentSpace.x + attacker.currentSpace.width / 2,
 						attacker.currentSpace.y + attacker.currentSpace.height / 2,
@@ -196,7 +197,7 @@ class AttackState extends State {
 							emitting: false
 						}
 					)
-					emitter.explode(20)
+					emitter.explode(dmg)
 					
 					scene.tweens.add({
 						targets: attacker,
