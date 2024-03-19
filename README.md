@@ -3,6 +3,7 @@ This is a game based on the series Star Wars. It is about conquering enemies and
 
 ## Info
 A game by James Yim
+Link: https://jamesnyim.github.io/Dejarik/
 
 ### Original Source
 The original source is from the Star Wars franchise. It is a game played by the characters in the universe. The first appererance was in "Star Wars: A New Hope". 
